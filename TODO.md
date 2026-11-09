@@ -79,7 +79,7 @@
 
 - [x] Alur khusus lulusan lama / ijazah luar negeri / PT tutup (verval manual + tanda `manual_verified` di metadata).
 - [x] Tool migrasi/input massal dari data CSV kampus (validasi format sebelum minting massal).
-- [ ] Integrasi SIAKAD kampus (sumber data kelulusan) untuk mengurangi input manual operator.
+- [x] Integrasi SIAKAD kampus (sumber data kelulusan) untuk mengurangi input manual operator.
 - [ ] Dukungan multi-chain / multi-institusi dengan registry issuer on-chain.
 - [ ] Versi English dari README & TODO (`README.en.md`).
 

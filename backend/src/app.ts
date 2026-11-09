@@ -23,6 +23,7 @@ import type { IpfsProvider } from "./services/ipfs";
 import type { VerificationService } from "./services/verification";
 import { validateEligibility } from "./services/eligibility";
 import { CSV_TEMPLATE, validateCsvImport } from "./services/csvImport";
+import { createSiakadProvider, withEligibility, type SiakadProvider } from "./services/siakad";
 import type { DiplomaRecord } from "./types";
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
@@ -56,6 +57,7 @@ export interface AppDependencies {
   chain: ChainRoutes;
   verification: VerificationService;
   diploma: DiplomaService;
+  siakad?: SiakadProvider;
 }
 
 const upload = multer({
@@ -286,6 +288,23 @@ export function createApp(deps: AppDependencies): Express {
     asyncHandler(async (req, res) => {
       const body = mintDiplomaSchema.parse(req.body);
       res.json(validateEligibility(body));
+    }),
+  );
+
+  // P2: integrasi SIAKAD — tarik data kelulusan + cek eligibility (admin)
+  app.get(
+    "/api/siakad/graduates",
+    writeAuth,
+    asyncHandler(async (req, res) => {
+      const institutionCode = String(req.query.institution_code ?? "").trim();
+      if (!institutionCode) {
+        throw new ValidationError("Query institution_code wajib diisi");
+      }
+      const provider =
+        deps.siakad ??
+        createSiakadProvider({ apiUrl: deps.config.siakadApiUrl, apiKey: deps.config.siakadApiKey });
+      const graduates = await provider.fetchGraduates(institutionCode);
+      res.json({ institutionCode, provider: provider.kind, count: graduates.length, graduates: withEligibility(graduates) });
     }),
   );
 

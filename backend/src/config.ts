@@ -19,6 +19,8 @@ export interface AppConfig {
   pinataApiKey?: string;
   pinataSecretKey?: string;
   localIpfsDir: string;
+  siakadApiUrl?: string;
+  siakadApiKey?: string;
 }
 
 function optional(value: string | undefined): string | undefined {
@@ -54,6 +56,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     pinataApiKey: optional(env.PINATA_API_KEY),
     pinataSecretKey: optional(env.PINATA_SECRET_KEY),
     localIpfsDir: optional(env.LOCAL_IPFS_DIR) ?? "./storage/ipfs",
+    siakadApiUrl: optional(env.SIAKAD_API_URL),
+    siakadApiKey: optional(env.SIAKAD_API_KEY),
   };
 }
 
