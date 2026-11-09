@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { ChainRegistry, parseChainsJson, type ChainConfig } from "./lib/chains";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ export interface AppConfig {
   localIpfsDir: string;
   siakadApiUrl?: string;
   siakadApiKey?: string;
+  chains: ChainRegistry;
 }
 
 function optional(value: string | undefined): string | undefined {
@@ -58,6 +60,15 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     localIpfsDir: optional(env.LOCAL_IPFS_DIR) ?? "./storage/ipfs",
     siakadApiUrl: optional(env.SIAKAD_API_URL),
     siakadApiKey: optional(env.SIAKAD_API_KEY),
+    chains: new ChainRegistry(
+      {
+        chainId: Number(optional(env.CHAIN_ID) ?? 80002),
+        name: "Polygon Amoy",
+        rpcUrl: optional(env.RPC_URL) ?? "https://rpc-amoy.polygon.technology",
+        contractAddress: optional(env.CONTRACT_ADDRESS) ?? "",
+      },
+      parseChainsJson(optional(env.CHAINS_JSON)),
+    ),
   };
 }
 

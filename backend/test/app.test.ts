@@ -20,6 +20,7 @@ const config: AppConfig = {
   ipfsProvider: "local",
   ipfsGateway: "https://gateway.pinata.cloud/ipfs",
   localIpfsDir: "./storage/ipfs",
+  chains: { list: () => [{ chainId: 80002, name: "Polygon Amoy", rpcUrl: "http://localhost:8545", contractAddress: "0x00000000000000000000000000000000000000B2" }], get: () => undefined, primary: () => ({ chainId: 80002, name: "Polygon Amoy", rpcUrl: "http://localhost:8545", contractAddress: "0x00000000000000000000000000000000000000B2" }), resolve: () => ({ chainId: 80002, name: "Polygon Amoy", rpcUrl: "http://localhost:8545", contractAddress: "0x00000000000000000000000000000000000000B2" }) } as any,
 };
 
 const metadata = {

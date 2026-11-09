@@ -143,6 +143,11 @@ export function createApp(deps: AppDependencies): Express {
     });
   });
 
+  // P2: daftar chain yang didukung (multi-chain / multi-institusi)
+  app.get("/api/chains", (_req, res) => {
+    res.json({ chains: deps.config.chains ? deps.config.chains.list() : [] });
+  });
+
   // ===== Public verification (read-only) =====
   app.get(
     "/api/verify/:tokenId",
