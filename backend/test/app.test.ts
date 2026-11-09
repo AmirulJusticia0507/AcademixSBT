@@ -188,6 +188,34 @@ describe("HTTP API", () => {
     expect(response.body.matches).toBe(false);
   });
 
+  it("POST /api/verify/batch memverifikasi banyak Token ID untuk HRD", async () => {
+    const response = await request(createApp(buildDeps()))
+      .post("/api/verify/batch")
+      .set("x-api-key", "test-key")
+      .send({ tokenIds: ["1", "2"] })
+      .expect(200);
+    expect(response.body.count).toBe(2);
+    expect(response.body.results[0]).toMatchObject({ tokenId: "1", found: true, valid: true });
+  });
+
+  it("POST /api/verify/batch menolak tanpa API key", async () => {
+    await request(createApp(buildDeps())).post("/api/verify/batch").send({ tokenIds: ["1"] }).expect(401);
+  });
+
+  it("GET /api/verify/:tokenId/proof mengembalikan proof bundle bertanda waktu", async () => {
+    const response = await request(createApp(buildDeps())).get("/api/verify/1/proof").expect(200);
+    expect(response.body.proofVersion).toBe("academixsbt/proof/v1");
+    expect(response.body.valid).toBe(true);
+    expect(response.body.chain.owner).toBe(onChain.owner);
+    expect(new Date(response.body.exportedAt).toISOString()).toBe(response.body.exportedAt);
+  });
+
+  it("GET /api/openapi.json tersedia", async () => {
+    const response = await request(createApp(buildDeps())).get("/api/openapi.json").expect(200);
+    expect(response.body.openapi).toBe("3.0.3");
+    expect(response.body.paths["/api/verify/batch"]).toBeDefined();
+  });
+
   it("GET /api/ipfs/:cid mengambil metadata lewat proxy", async () => {
     const response = await request(createApp(buildDeps())).get("/api/ipfs/bafy-metadata").expect(200);
     expect(response.body.diploma.certificate_number).toBe("IJZ-001");

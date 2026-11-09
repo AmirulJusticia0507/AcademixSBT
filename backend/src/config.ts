@@ -6,6 +6,7 @@ export interface AppConfig {
   port: number;
   publicApiUrl: string;
   adminApiKey: string;
+  verifierApiKey?: string;
   databaseUrl: string;
   rpcUrl: string;
   chainId: number;
@@ -40,6 +41,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     port,
     publicApiUrl: (optional(env.PUBLIC_API_URL) ?? `http://localhost:${port}`).replace(/\/$/, ""),
     adminApiKey: optional(env.ADMIN_API_KEY) ?? "dev-admin-key",
+    verifierApiKey: optional(env.VERIFIER_API_KEY),
     databaseUrl: optional(env.DATABASE_URL) ?? "postgresql://postgres:postgres@localhost:5432/academix",
     rpcUrl: optional(env.RPC_URL) ?? "https://rpc-amoy.polygon.technology",
     chainId: Number(optional(env.CHAIN_ID) ?? 80002),

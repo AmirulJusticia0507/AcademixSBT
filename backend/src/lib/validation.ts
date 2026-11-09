@@ -58,6 +58,10 @@ export const issuerSchema = z.object({
   issuer: addressSchema,
 });
 
+export const batchVerifySchema = z.object({
+  tokenIds: z.array(tokenIdSchema).min(1).max(50),
+});
+
 export const auditQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(200).default(50),
 });
