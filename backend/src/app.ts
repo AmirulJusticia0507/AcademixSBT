@@ -22,6 +22,7 @@ import type { DiplomaService } from "./services/diploma";
 import type { IpfsProvider } from "./services/ipfs";
 import type { VerificationService } from "./services/verification";
 import { validateEligibility } from "./services/eligibility";
+import { CSV_TEMPLATE, validateCsvImport } from "./services/csvImport";
 import type { DiplomaRecord } from "./types";
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
@@ -285,6 +286,24 @@ export function createApp(deps: AppDependencies): Express {
     asyncHandler(async (req, res) => {
       const body = mintDiplomaSchema.parse(req.body);
       res.json(validateEligibility(body));
+    }),
+  );
+
+  // P2: migrasi massal CSV — validasi saja (dry-run), template CSV
+  app.get("/api/diplomas/import/template.csv", writeAuth, (_req, res) => {
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", 'attachment; filename="academix-diploma-template.csv"');
+    res.send(CSV_TEMPLATE);
+  });
+
+  app.post(
+    "/api/diplomas/import/validate",
+    writeAuth,
+    upload.single("file"),
+    asyncHandler(async (req, res) => {
+      const file = requireFile(req.file);
+      const report = validateCsvImport(file.buffer.toString("utf8"));
+      res.json(report);
     }),
   );
 
