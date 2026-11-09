@@ -193,6 +193,17 @@ describe("HTTP API", () => {
     expect(response.body.diploma.certificate_number).toBe("IJZ-001");
   });
 
+  it("POST /api/diplomas/validate melaporkan tidak eligible ala PISN", async () => {
+    const response = await request(createApp(buildDeps()))
+      .post("/api/diplomas/validate")
+      .set("x-api-key", "test-key")
+      .send(mintForm({ gpa: "1.2", creditsEarned: "100" }))
+      .expect(200);
+
+    expect(response.body.eligible).toBe(false);
+    expect(response.body.failedCodes).toEqual(expect.arrayContaining(["gpa", "credits"]));
+  });
+
   it("POST /api/diplomas menolak request tanpa API key", async () => {
     const app = createApp(buildDeps());
     const response = await request(app).post("/api/diplomas").field(mintForm()).expect(401);

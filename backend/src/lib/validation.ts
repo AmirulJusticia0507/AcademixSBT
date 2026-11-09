@@ -22,6 +22,26 @@ export const mintDiplomaSchema = z.object({
   studyProgram: z.string().trim().min(2).max(100),
   degree: z.string().trim().min(1).max(50),
   graduationDate: z.string().trim().max(50).optional(),
+  // Validator ala PISN (opsional)
+  accreditationStatus: z.string().trim().max(50).optional(),
+  graduationStatus: z.string().trim().max(50).optional(),
+  studyDurationYears: z.coerce.number().min(0).max(20).optional(),
+  maxStudyDurationYears: z.coerce.number().min(1).max(20).optional(),
+  creditsEarned: z.coerce.number().int().min(0).optional(),
+  minCredits: z.coerce.number().int().min(0).optional(),
+  gpa: z.coerce.number().min(0).max(4).optional(),
+  minGpa: z.coerce.number().min(0).max(4).optional(),
+  nik: z.string().trim().max(32).optional(),
+  passportNumber: z.string().trim().max(32).optional(),
+  activeReported: z
+    .union([z.boolean(), z.enum(["true", "false"]), z.enum(["1", "0"])])
+    .transform((v) => v === true || v === "true" || v === "1")
+    .optional(),
+  exceptionApproved: z
+    .union([z.boolean(), z.enum(["true", "false"]), z.enum(["1", "0"])])
+    .transform((v) => v === true || v === "true" || v === "1")
+    .optional(),
+  exceptionReason: z.string().trim().max(500).optional(),
 });
 
 export type MintDiplomaBody = z.infer<typeof mintDiplomaSchema>;

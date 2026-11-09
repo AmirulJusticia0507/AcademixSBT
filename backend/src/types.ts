@@ -44,6 +44,20 @@ export interface MintDiplomaInput {
   studyProgram: string;
   degree: string;
   graduationDate?: string;
+  // Field validator ala PISN (opsional, diperiksa bila dikirim)
+  accreditationStatus?: string;
+  graduationStatus?: string;
+  studyDurationYears?: number;
+  maxStudyDurationYears?: number;
+  creditsEarned?: number;
+  minCredits?: number;
+  gpa?: number;
+  minGpa?: number;
+  nik?: string;
+  passportNumber?: string;
+  activeReported?: boolean;
+  exceptionApproved?: boolean;
+  exceptionReason?: string;
   document: Buffer;
   documentFileName: string;
   documentMimeType: string;

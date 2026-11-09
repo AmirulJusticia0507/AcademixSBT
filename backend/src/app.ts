@@ -18,6 +18,7 @@ import type { DiplomaRepository } from "./repositories/diplomaRepository";
 import type { DiplomaService } from "./services/diploma";
 import type { IpfsProvider } from "./services/ipfs";
 import type { VerificationService } from "./services/verification";
+import { validateEligibility } from "./services/eligibility";
 import type { DiplomaRecord } from "./types";
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
@@ -108,6 +109,7 @@ export function createApp(deps: AppDependencies): Express {
         health: "/api/health",
         verifyToken: "/api/verify/:tokenId",
         verifyWallet: "/api/verify/wallet/:address",
+        validateEligibility: "POST /api/diplomas/validate",
       },
     });
   });
@@ -191,6 +193,16 @@ export function createApp(deps: AppDependencies): Express {
   );
 
   // ===== Institution / admin (API key) =====
+  // Cek eligibility ala PISN tanpa minting (memberi laporan per-validator).
+  app.post(
+    "/api/diplomas/validate",
+    writeAuth,
+    asyncHandler(async (req, res) => {
+      const body = mintDiplomaSchema.parse(req.body);
+      res.json(validateEligibility(body));
+    }),
+  );
+
   app.post(
     "/api/diplomas",
     writeAuth,

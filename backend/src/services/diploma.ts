@@ -5,6 +5,7 @@ import type { DiplomaMetadataInput, DiplomaRecord, MintDiplomaInput, MintedDiplo
 import type { SaveMintedDiplomaInput } from "../repositories/diplomaRepository";
 import type { IpfsProvider } from "./ipfs";
 import { ipfsUri } from "./ipfs";
+import { validateEligibility } from "./eligibility";
 
 export interface ChainWriter {
   mint(to: string, tokenId: string, uri: string): Promise<{ txHash: string; issuerAddress: string }>;
@@ -33,6 +34,15 @@ export class DiplomaService {
     }
     if (input.document.length > MAX_DOCUMENT_BYTES) {
       throw new ValidationError("Ukuran berkas ijazah maksimal 10 MB");
+    }
+
+    // Pre-mint validator ala PISN: tolak data tidak eligible sebelum minting.
+    const eligibility = validateEligibility(input);
+    if (!eligibility.eligible) {
+      throw new ValidationError("Data tidak eligible untuk minting (validator ala PISN)", {
+        failedCodes: eligibility.failedCodes,
+        checks: eligibility.checks,
+      });
     }
 
     if (await this.store.findByTokenId(input.tokenId)) {

@@ -54,10 +54,10 @@
 
 ### Pre-Mint Validator ala PISN
 
-- [ ] Checklist eligible sebelum minting: Prodi terakreditasi, status Lulus, tanggal yudisium terisi, masa studi, minimal SKS & IPK, NIK/passport terisi.
-- [ ] Laporan data tidak eligible + alasan spesifik (bukan sekadar "tidak ditemukan").
-- [ ] Alur koreksi data di PostgreSQL + audit log.
-- [ ] (Opsional) Alur eksepsi terdokumentasi: upload SK Yudisium/BA Sidang + SPTJM, persetujuan pimpinan PT, tercatat di audit log.
+- [x] Checklist eligible sebelum minting: Prodi terakreditasi, status Lulus, tanggal yudisium terisi, masa studi, minimal SKS & IPK, NIK/passport terisi.
+- [x] Laporan data tidak eligible + alasan spesifik (bukan sekadar "tidak ditemukan").
+- [x] Alur koreksi data di PostgreSQL + audit log.
+- [ ] (Opsional) Alur eksepsi terdokumentasi: upload SK Yudisium/BA Sidang + SPTJM, persetujuan pimpinan PT, tercatat di audit log. — *Flag `exceptionApproved` + `exceptionReason` sudah ada; upload dokumen pendukung belum.*
 
 ### Integrasi & Interoperabilitas
 
