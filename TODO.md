@@ -29,10 +29,10 @@
 
 ### Backend & IPFS
 
-- [ ] Integrasi API Backend untuk Pengunggahan Metadata ke IPFS (Pinata / Web3.Storage).
-- [ ] Hitung hash SHA-256 berkas PDF ijazah di backend; simpan hash + IPFS CID di metadata.
-- [ ] Simpan record minting ke PostgreSQL (`diploma_tokens`: `token_id`, `ipfs_cid`, `tx_hash`, `certificate_number`, `is_revoked`, `minted_at`).
-- [ ] Audit log: siapa memasukkan/mengubah data apa, kapan.
+- [x] Integrasi API Backend untuk Pengunggahan Metadata ke IPFS (Pinata / lokal).
+- [x] Hitung hash SHA-256 berkas PDF ijazah di backend; simpan hash + IPFS CID di metadata.
+- [x] Simpan record minting ke PostgreSQL (`diploma_tokens`: `token_id`, `ipfs_cid`, `tx_hash`, `certificate_number`, `is_revoked`, `minted_at`).
+- [x] Audit log: siapa memasukkan/mengubah data apa, kapan.
 
 ### Frontend — Portal Verifikasi Publik
 
