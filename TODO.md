@@ -17,14 +17,15 @@
 
 ### Smart Contract
 
-- [ ] Implementasi Smart Contract ERC-5192 (`DiplomaSBT`) pada Testnet (Polygon Amoy / Arbitrum Sepolia).
-- [ ] Role `MINTER_ROLE` / `DEFAULT_ADMIN_ROLE` via OpenZeppelin `AccessControl`.
-- [ ] `safeMintSBT(address, tokenId, uri)` + event `Locked(tokenId)`.
-- [ ] `revokeDiploma(tokenId)` + mapping `isRevoked` + event `Revoked(tokenId)`.
-- [ ] `tokenURI(tokenId)` mengembalikan URI metadata IPFS.
-- [ ] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah).
-- [ ] Test non-transferable: transfer antar wallet harus revert (`SBTError: Token is soulbound and non-transferable`).
-- [ ] Test hanya wallet institusi terdaftar (`issuerAddress`) yang dapat minting.
+- [x] Implementasi Smart Contract ERC-5192 (`DiplomaSBT`) — selesai & lulus test lokal.
+- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia) — butuh `PRIVATE_KEY` + RPC.
+- [x] Role `MINTER_ROLE` / `DEFAULT_ADMIN_ROLE` via OpenZeppelin `AccessControl`.
+- [x] `safeMintSBT(address, tokenId, uri)` + event `Locked(tokenId)`.
+- [x] `revokeDiploma(tokenId)` + mapping `isRevoked` + event `Revoked(tokenId)`.
+- [x] `tokenURI(tokenId)` mengembalikan URI metadata IPFS.
+- [x] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah).
+- [x] Test non-transferable: transfer antar wallet harus revert (`SBTError: Token is soulbound and non-transferable`).
+- [x] Test hanya wallet institusi terdaftar (`issuerAddress`) yang dapat minting.
 
 ### Backend & IPFS
 
