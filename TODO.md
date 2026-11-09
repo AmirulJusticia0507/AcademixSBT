@@ -36,11 +36,11 @@
 
 ### Frontend — Portal Verifikasi Publik
 
-- [ ] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
-- [ ] Verifikasi via QR Code (berisi Token ID / URL verifikasi) yang dapat dipindai HRD.
-- [ ] Verifikasi via Token ID dan Wallet Address sebagai alternatif.
-- [ ] Kartu hasil verifikasi: status valid, nama, NIM, Prodi, gelar, institusi, tanggal minting, link IPFS, status revoked.
-- [ ] Tampilkan perbandingan hash PDF (hash di metadata vs hash berkas yang diunggah verifier).
+- [x] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
+- [x] Verifikasi via QR Code (berisi Token ID / URL verifikasi) yang dapat dipindai HRD.
+- [x] Verifikasi via Token ID dan Wallet Address sebagai alternatif.
+- [x] Kartu hasil verifikasi: status valid, nama, NIM, Prodi, gelar, institusi, tanggal minting, link IPFS, status revoked.
+- [x] Tampilkan perbandingan hash PDF (hash di metadata vs hash berkas yang diunggah verifier).
 
 ---
 

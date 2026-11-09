@@ -1,0 +1,24 @@
+{
+  "name": "academix-sbt-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "ethers": "^6.16.0",
+    "html5-qrcode": "^2.3.8",
+    "next": "16.4.5",
+    "qrcode.react": "^4.2.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.9.0"
+  }
+}
