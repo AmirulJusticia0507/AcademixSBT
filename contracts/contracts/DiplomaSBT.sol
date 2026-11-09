@@ -38,6 +38,8 @@ contract DiplomaSBT is ERC721Enumerable, AccessControl, IERC5192 {
     mapping(uint256 => bool) public isRevoked;
     // Institusi penerbit tiap token (untuk verifikasi on-chain)
     mapping(uint256 => address) public issuerOf;
+    // Waktu minting on-chain (block timestamp, untuk tanggal di portal verifikasi)
+    mapping(uint256 => uint256) public mintedAt;
     // Wallet institusi yang terdaftar/terverifikasi
     mapping(address => bool) public isRegisteredIssuer;
 
@@ -165,6 +167,7 @@ contract DiplomaSBT is ERC721Enumerable, AccessControl, IERC5192 {
         _tokenURIs[tokenId] = uri;
         _locked[tokenId] = true;
         issuerOf[tokenId] = msg.sender;
+        mintedAt[tokenId] = block.timestamp;
 
         emit Locked(tokenId);
     }

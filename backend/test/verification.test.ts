@@ -25,6 +25,7 @@ function chainFixture(overrides: Partial<Awaited<ReturnType<ChainReader["getDipl
     tokenUri: "ipfs://bafy-metadata",
     locked: true,
     revoked: false,
+    mintedAt: "2026-11-09T00:00:00.000Z",
     ...overrides,
   };
 

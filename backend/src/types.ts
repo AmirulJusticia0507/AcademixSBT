@@ -69,6 +69,7 @@ export interface OnChainDiploma {
   tokenUri: string;
   locked: boolean;
   revoked: boolean;
+  mintedAt: string | null;
 }
 
 export interface VerifiedDiploma extends OnChainDiploma {

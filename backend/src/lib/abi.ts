@@ -9,6 +9,7 @@ export const DIPLOMA_SBT_ABI = [
   "function isLocked(uint256 tokenId) view returns (bool)",
   "function isRevoked(uint256 tokenId) view returns (bool)",
   "function issuerOf(uint256 tokenId) view returns (address)",
+  "function mintedAt(uint256 tokenId) view returns (uint256)",
   "function isRegisteredIssuer(address issuer) view returns (bool)",
   "function balanceOf(address owner) view returns (uint256)",
   "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",

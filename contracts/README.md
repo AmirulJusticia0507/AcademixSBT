@@ -34,6 +34,7 @@ npm run deploy:sepolia   # Arbitrum Sepolia
   dan meng-emit `Revoked(tokenId)` agar bukti tetap dapat diaudit.
 - `tokenOfOwnerByIndex(wallet, i)` memungkinkan portal verifikasi mencari token
   berdasarkan wallet tanpa backend.
+- `mintedAt(tokenId)` menyimpan block timestamp minting untuk ditampilkan di portal.
 
 ## ERC-5192
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { DiplomaMetadata } from "../types";
+import type { DiplomaMetadata, OnChainDiploma } from "../types";
 import { cidFromUri, type IpfsProvider } from "./ipfs";
 
 const metadataSchema = z.object({
@@ -28,38 +28,16 @@ export function parseDiplomaMetadata(value: unknown): DiplomaMetadata {
 }
 
 export interface ChainReader {
-  getDiploma(tokenId: string): Promise<{
-    tokenId: string;
-    owner: string;
-    issuer: string;
-    tokenUri: string;
-    locked: boolean;
-    revoked: boolean;
-  }>;
-  findByOwner(owner: string): Promise<
-    Array<{
-      tokenId: string;
-      owner: string;
-      issuer: string;
-      tokenUri: string;
-      locked: boolean;
-      revoked: boolean;
-    }>
-  >;
+  getDiploma(tokenId: string): Promise<OnChainDiploma>;
+  findByOwner(owner: string): Promise<OnChainDiploma[]>;
 }
 
 export interface MetadataReader {
   readJson(cid: string): Promise<unknown>;
 }
 
-export interface VerificationResult {
+export interface VerificationResult extends OnChainDiploma {
   found: true;
-  tokenId: string;
-  owner: string;
-  issuer: string;
-  tokenUri: string;
-  locked: boolean;
-  revoked: boolean;
   metadata: DiplomaMetadata | null;
   metadataError?: string;
 }

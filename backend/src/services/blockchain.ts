@@ -102,12 +102,18 @@ export class BlockchainService {
       throw new NotFoundError(`Token ID ${id.toString()} tidak ditemukan on-chain`);
     }
 
-    const [issuer, tokenUri, locked, revoked] = await Promise.all([
+    const [issuer, tokenUri, locked, revoked, mintedAtRaw] = await Promise.all([
       contract.issuerOf(id) as Promise<string>,
       contract.tokenURI(id) as Promise<string>,
       contract.locked(id) as Promise<boolean>,
       contract.isRevoked(id) as Promise<boolean>,
+      contract.mintedAt(id) as Promise<bigint>,
     ]);
+
+    const mintedAt =
+      mintedAtRaw && mintedAtRaw > 0n
+        ? new Date(Number(mintedAtRaw) * 1000).toISOString()
+        : null;
 
     return {
       tokenId: id.toString(),
@@ -116,6 +122,7 @@ export class BlockchainService {
       tokenUri,
       locked: Boolean(locked),
       revoked: Boolean(revoked),
+      mintedAt,
     };
   }
 

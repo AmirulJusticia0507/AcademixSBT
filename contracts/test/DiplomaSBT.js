@@ -34,6 +34,7 @@ describe("DiplomaSBT (ERC-5192)", function () {
       expect(await contract.isLocked(1)).to.equal(true);
       expect(await contract.locked(1)).to.equal(true);
       expect(await contract.issuerOf(1)).to.equal(admin.address);
+      expect(await contract.mintedAt(1)).to.be.greaterThan(0n);
       expect(await contract.balanceOf(alumni.address)).to.equal(1n);
     });
 
