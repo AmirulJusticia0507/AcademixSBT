@@ -68,10 +68,10 @@
 
 ### Privasi, Keamanan & Kepatuhan
 
-- [ ] Enkripsi data sensitif alumni di PostgreSQL; hanya hash & identitas institusi yang on-chain.
-- [ ] Role-based access (Institution / Alumni / Public Verifier).
-- [ ] Review keamanan smart contract sebelum mainnet.
-- [ ] Kajian kepatuhan: UU PDP, regulasi PDDikti/PISN, dan penomoran ijazah nasional (Permendikbudristek No. 6 Tahun 2022).
+- [x] Enkripsi data sensitif alumni di PostgreSQL; hanya hash & identitas institusi yang on-chain.
+- [x] Role-based access (Institution / Alumni / Public Verifier).
+- [x] Review keamanan smart contract sebelum mainnet.
+- [x] Kajian kepatuhan: UU PDP, regulasi PDDikti/PISN, dan penomoran ijazah nasional (Permendikbudristek No. 6 Tahun 2022).
 
 ---
 

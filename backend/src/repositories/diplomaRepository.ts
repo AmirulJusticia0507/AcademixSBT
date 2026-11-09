@@ -43,6 +43,9 @@ export interface SaveMintedDiplomaInput {
     studyProgram: string;
     degree: string;
     walletAddress: string;
+    /** NIK/paspor yang sudah dienkripsi AES-256-GCM (opsional, P1 privasi) */
+    nikEncrypted?: string;
+    passportEncrypted?: string;
   };
 }
 
@@ -110,14 +113,16 @@ export class DiplomaRepository {
     institutionId: string,
   ): Promise<string> {
     const rows = await client.query<{ id: string }>(
-      `INSERT INTO graduates (nim, full_name, study_program, degree, wallet_address, institution_id)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO graduates (nim, full_name, study_program, degree, wallet_address, institution_id, nik_encrypted, passport_encrypted)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        ON CONFLICT (nim) DO UPDATE SET
          full_name = EXCLUDED.full_name,
          study_program = EXCLUDED.study_program,
          degree = EXCLUDED.degree,
          wallet_address = EXCLUDED.wallet_address,
-         institution_id = EXCLUDED.institution_id
+         institution_id = EXCLUDED.institution_id,
+         nik_encrypted = COALESCE(EXCLUDED.nik_encrypted, graduates.nik_encrypted),
+         passport_encrypted = COALESCE(EXCLUDED.passport_encrypted, graduates.passport_encrypted)
        RETURNING id`,
       [
         graduate.nim,
@@ -126,6 +131,8 @@ export class DiplomaRepository {
         graduate.degree,
         graduate.walletAddress.toLowerCase(),
         institutionId,
+        graduate.nikEncrypted ?? null,
+        graduate.passportEncrypted ?? null,
       ],
     );
     return rows.rows[0].id;

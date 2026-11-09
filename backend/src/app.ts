@@ -16,6 +16,7 @@ import {
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 import { requireApiKey, requireVerifierApiKey } from "./middleware/auth";
 import { rateLimit } from "./middleware/rateLimit";
+import { resolveRole } from "./middleware/rbac";
 import type { DiplomaRepository } from "./repositories/diplomaRepository";
 import type { DiplomaService } from "./services/diploma";
 import type { IpfsProvider } from "./services/ipfs";
@@ -86,6 +87,8 @@ export function createApp(deps: AppDependencies): Express {
   app.use(express.json({ limit: "1mb" }));
   // Rate limit global (PoC in-memory) — endpoint publik & HRD
   app.use(rateLimit({ windowMs: 60_000, max: 120 }));
+  // RBAC: tandai role per request (admin / verifier / public)
+  app.use(resolveRole(deps.config.adminApiKey, deps.config.verifierApiKey));
 
   const health = asyncHandler(async (_req: Request, res: Response) => {
     const [dbOk, chainInfo] = await Promise.all([

@@ -6,6 +6,7 @@ import type { SaveMintedDiplomaInput } from "../repositories/diplomaRepository";
 import type { IpfsProvider } from "./ipfs";
 import { ipfsUri } from "./ipfs";
 import { validateEligibility } from "./eligibility";
+import { encryptSensitive, loadEncryptionKey } from "../lib/crypto";
 
 export interface ChainWriter {
   mint(to: string, tokenId: string, uri: string): Promise<{ txHash: string; issuerAddress: string }>;
@@ -89,6 +90,12 @@ export class DiplomaService {
       mintedAt: issuedAt,
     };
 
+    // NIK/paspor hanya disimpan terenkripsi di DB, tidak pernah on-chain/IPFS.
+    const encryptionKey = loadEncryptionKey();
+    const nikEncrypted = input.nik && encryptionKey ? encryptSensitive(input.nik, encryptionKey) : undefined;
+    const passportEncrypted =
+      input.passportNumber && encryptionKey ? encryptSensitive(input.passportNumber, encryptionKey) : undefined;
+
     await this.store.saveMinted({
       minted,
       institution: {
@@ -102,6 +109,8 @@ export class DiplomaService {
         studyProgram: input.studyProgram,
         degree: input.degree,
         walletAddress: input.walletAddress,
+        nikEncrypted,
+        passportEncrypted,
       },
     });
 
