@@ -135,6 +135,50 @@ export class PinataIpfsProvider implements IpfsProvider {
   }
 }
 
+/**
+ * Cache readJson di memory (TTL + batas entri).
+ * Metadata ijazah bersifat immutable (CID), jadi aman di-cache lama.
+ * Ini mengurangi beban gateway IPFS saat trafik verifikasi tinggi (P1 zero-downtime).
+ */
+export class CachedIpfsProvider implements IpfsProvider {
+  readonly kind: IpfsProvider["kind"];
+  private readonly cache = new Map<string, { value: unknown; expiresAt: number }>();
+
+  constructor(
+    private readonly inner: IpfsProvider,
+    private readonly ttlMs = 5 * 60_000,
+    private readonly maxEntries = 500,
+  ) {
+    this.kind = inner.kind;
+  }
+
+  async uploadJson(value: unknown): Promise<IpfsUploadResult> {
+    const result = await this.inner.uploadJson(value);
+    this.cache.set(result.cid, { value, expiresAt: Date.now() + this.ttlMs });
+    return result;
+  }
+
+  async readJson(cid: string): Promise<unknown> {
+    const cached = this.cache.get(cid);
+    if (cached && cached.expiresAt > Date.now()) {
+      // Refresh urutan LRU
+      this.cache.delete(cid);
+      this.cache.set(cid, cached);
+      return cached.value;
+    }
+    if (cached) this.cache.delete(cid);
+
+    const value = await this.inner.readJson(cid);
+
+    if (this.cache.size >= this.maxEntries) {
+      const oldest = this.cache.keys().next().value;
+      if (oldest) this.cache.delete(oldest);
+    }
+    this.cache.set(cid, { value, expiresAt: Date.now() + this.ttlMs });
+    return value;
+  }
+}
+
 export function createIpfsProvider(options: {
   provider: "pinata" | "local";
   localDir: string;
@@ -143,13 +187,15 @@ export function createIpfsProvider(options: {
   pinataApiKey?: string;
   pinataSecretKey?: string;
 }): IpfsProvider {
-  if (options.provider === "pinata") {
-    return new PinataIpfsProvider({
-      jwt: options.pinataJwt,
-      apiKey: options.pinataApiKey,
-      secretKey: options.pinataSecretKey,
-      gateway: options.gateway,
-    });
-  }
-  return new LocalIpfsProvider(options.localDir);
+  const inner: IpfsProvider =
+    options.provider === "pinata"
+      ? new PinataIpfsProvider({
+          jwt: options.pinataJwt,
+          apiKey: options.pinataApiKey,
+          secretKey: options.pinataSecretKey,
+          gateway: options.gateway,
+        })
+      : new LocalIpfsProvider(options.localDir);
+
+  return new CachedIpfsProvider(inner);
 }

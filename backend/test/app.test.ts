@@ -120,7 +120,8 @@ describe("HTTP API", () => {
     const response = await request(app).get("/api/health").expect(200);
 
     expect(response.body.status).toBe("ok");
-    expect(response.body.checks).toEqual({ database: "up", blockchain: "up" });
+    expect(response.body.checks).toEqual({ database: "up", blockchain: "up", ipfs: "up" });
+    expect(response.body.verificationAvailable).toBe(true);
   });
 
   it("GET /api/health melaporkan degraded saat blockchain down", async () => {

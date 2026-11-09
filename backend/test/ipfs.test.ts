@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { ServiceUnavailableError } from "../src/lib/errors";
-import { cidFromUri, LocalIpfsProvider } from "../src/services/ipfs";
+import { CachedIpfsProvider, cidFromUri, LocalIpfsProvider } from "../src/services/ipfs";
 
 describe("IPFS lokal", () => {
   let dir: string;
@@ -38,6 +38,25 @@ describe("IPFS lokal", () => {
     await expect(provider.readJson("../../etc/passwd")).rejects.toBeInstanceOf(
       ServiceUnavailableError,
     );
+  });
+});
+
+describe("CachedIpfsProvider (P1 zero-downtime)", () => {
+  it("tidak memanggil provider dalam 2x read untuk CID yang sama", async () => {
+    let calls = 0;
+    const inner = {
+      kind: "local" as const,
+      uploadJson: async () => ({ cid: "cid-1" }),
+      readJson: async () => {
+        calls += 1;
+        return { n: calls };
+      },
+    };
+    const cached = new CachedIpfsProvider(inner, 60_000);
+    const first = await cached.readJson("cid-1");
+    const second = await cached.readJson("cid-1");
+    expect(first).toEqual(second);
+    expect(calls).toBe(1);
   });
 });
 

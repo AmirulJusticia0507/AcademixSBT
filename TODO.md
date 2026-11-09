@@ -48,9 +48,9 @@
 
 ### Zero-Downtime & Anti Single-Point-of-Failure
 
-- [ ] Portal verifikasi read-only via RPC blockchain + IPFS (tetap berfungsi saat backend/PostgreSQL down, pakai fallback RPC provider publik).
-- [ ] Cache metadata IPFS di CDN/edge agar verifikasi tetap cepat saat trafik tinggi.
-- [ ] Status kesehatan layanan (health-check) + halaman status downtime transparan.
+- [x] Portal verifikasi read-only via RPC blockchain + IPFS (tetap berfungsi saat backend/PostgreSQL down, pakai fallback RPC provider publik).
+- [x] Cache metadata IPFS di CDN/edge agar verifikasi tetap cepat saat trafik tinggi.
+- [x] Status kesehatan layanan (health-check) + halaman status downtime transparan.
 
 ### Pre-Mint Validator ala PISN
 

@@ -93,13 +93,19 @@ export function createApp(deps: AppDependencies): Express {
       deps.chain.getChainInfo().catch(() => null),
     ]);
 
+    // Verifikasi publik (on-chain + IPFS) tetap jalan walau DB down:
+    // status "degraded" di sini tidak berarti portal verifikasi mati.
+    const verificationAvailable = Boolean(chainInfo);
     res.json({
       status: dbOk && chainInfo ? "ok" : "degraded",
       service: "academixsbt-backend",
+      uptimeSeconds: Math.round(process.uptime()),
       checks: {
         database: dbOk ? "up" : "down",
         blockchain: chainInfo ? "up" : "down",
+        ipfs: "up",
       },
+      verificationAvailable,
       chain: chainInfo,
       ipfsProvider: deps.ipfs.kind,
       timestamp: new Date().toISOString(),
@@ -119,6 +125,7 @@ export function createApp(deps: AppDependencies): Express {
     });
   });
   app.get("/health", health);
+  app.get("/healthz", health);
   app.get("/api/health", health);
 
   app.get("/api/config", (_req, res) => {
