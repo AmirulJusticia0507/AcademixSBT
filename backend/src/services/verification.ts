@@ -18,6 +18,11 @@ const metadataSchema = z.object({
     degree: z.string().optional(),
     graduation_date: z.string().optional(),
     issued_at: z.string().optional(),
+    verification_mode: z.enum(["standard", "manual"]).optional(),
+    manual_verified: z.boolean().optional(),
+    manual_verification_type: z.string().optional(),
+    manual_verifier: z.string().optional(),
+    manual_verification_reason: z.string().optional(),
     schema: z.string().optional(),
   }),
 });

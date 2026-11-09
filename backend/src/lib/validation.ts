@@ -42,6 +42,23 @@ export const mintDiplomaSchema = z.object({
     .transform((v) => v === true || v === "true" || v === "1")
     .optional(),
   exceptionReason: z.string().trim().max(500).optional(),
+  // P2: verval manual (lulusan lama / luar negeri / PT tutup)
+  verificationMode: z.enum(["standard", "manual"]).optional(),
+  manualVerificationType: z.enum(["legacy", "foreign", "closed_institution"]).optional(),
+  manualVerifier: z.string().trim().min(2).max(255).optional(),
+  manualVerificationReason: z.string().trim().min(10).max(1000).optional(),
+}).superRefine((data, ctx) => {
+  if (data.verificationMode === "manual") {
+    if (!data.manualVerificationType) {
+      ctx.addIssue({ code: "custom", message: "manualVerificationType wajib diisi untuk verval manual", path: ["manualVerificationType"] });
+    }
+    if (!data.manualVerifier) {
+      ctx.addIssue({ code: "custom", message: "manualVerifier wajib diisi untuk verval manual", path: ["manualVerifier"] });
+    }
+    if (!data.manualVerificationReason) {
+      ctx.addIssue({ code: "custom", message: "manualVerificationReason wajib diisi untuk verval manual", path: ["manualVerificationReason"] });
+    }
+  }
 });
 
 export type MintDiplomaBody = z.infer<typeof mintDiplomaSchema>;

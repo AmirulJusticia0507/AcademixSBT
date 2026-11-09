@@ -32,6 +32,8 @@ function mapDiploma(row: DiplomaRow): DiplomaRecord {
 
 export interface SaveMintedDiplomaInput {
   minted: MintedDiploma;
+  manualVerified?: boolean;
+  verificationMode?: "standard" | "manual";
   institution: {
     code: string;
     name: string;
@@ -62,8 +64,8 @@ export class DiplomaRepository {
       await client.query(
         `INSERT INTO diploma_tokens
            (graduate_id, institution_id, token_id, ipfs_cid, token_uri, document_hash,
-            tx_hash, certificate_number, issuer_address, is_revoked, minted_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, FALSE, $10)`,
+            tx_hash, certificate_number, issuer_address, is_revoked, minted_at, manual_verified, verification_mode)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, FALSE, $10, $11, $12)`,
         [
           graduateId,
           institutionId,
@@ -75,6 +77,8 @@ export class DiplomaRepository {
           minted.certificateNumber,
           minted.issuerAddress,
           minted.mintedAt,
+          input.manualVerified ?? false,
+          input.verificationMode ?? "standard",
         ],
       );
 

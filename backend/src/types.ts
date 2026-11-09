@@ -10,6 +10,11 @@ export interface DiplomaMetadataInput {
   documentHash: string;
   documentFileName: string;
   issuedAt: string;
+  verificationMode?: "standard" | "manual";
+  manualVerified?: boolean;
+  manualVerificationType?: string;
+  manualVerifier?: string;
+  manualVerificationReason?: string;
 }
 
 export interface DiplomaMetadata {
@@ -29,6 +34,11 @@ export interface DiplomaMetadata {
     degree: string;
     graduation_date?: string;
     issued_at: string;
+    verification_mode?: "standard" | "manual";
+    manual_verified?: boolean;
+    manual_verification_type?: string;
+    manual_verifier?: string;
+    manual_verification_reason?: string;
     schema: "academixsbt/diploma/v1";
   };
 }
@@ -58,6 +68,11 @@ export interface MintDiplomaInput {
   activeReported?: boolean;
   exceptionApproved?: boolean;
   exceptionReason?: string;
+  // P2: alur manual untuk lulusan lama / luar negeri / PT tutup
+  verificationMode?: "standard" | "manual";
+  manualVerificationType?: "legacy" | "foreign" | "closed_institution";
+  manualVerifier?: string;
+  manualVerificationReason?: string;
   document: Buffer;
   documentFileName: string;
   documentMimeType: string;

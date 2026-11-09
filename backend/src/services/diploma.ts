@@ -68,6 +68,11 @@ export class DiplomaService {
       documentHash,
       documentFileName: input.documentFileName,
       issuedAt,
+      verificationMode: input.verificationMode ?? "standard",
+      manualVerified: input.verificationMode === "manual",
+      manualVerificationType: input.manualVerificationType,
+      manualVerifier: input.manualVerifier,
+      manualVerificationReason: input.manualVerificationReason,
     };
 
     const { cid } = await this.ipfs.uploadJson(buildDiplomaMetadata(metadataInput));
@@ -98,6 +103,8 @@ export class DiplomaService {
 
     await this.store.saveMinted({
       minted,
+      manualVerified: input.verificationMode === "manual",
+      verificationMode: input.verificationMode ?? "standard",
       institution: {
         code: input.institutionCode,
         name: input.institutionName,

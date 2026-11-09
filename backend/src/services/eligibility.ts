@@ -27,6 +27,10 @@ export interface EligibilityInput {
   activeReported?: boolean;
   exceptionApproved?: boolean;
   exceptionReason?: string;
+  verificationMode?: "standard" | "manual";
+  manualVerificationType?: string;
+  manualVerifier?: string;
+  manualVerificationReason?: string;
 }
 
 export interface EligibilityCheck {
@@ -69,6 +73,26 @@ function normalize(value: string): string {
 }
 
 export function validateEligibility(input: EligibilityInput): EligibilityResult {
+  // P2: verval manual untuk lulusan lama / luar negeri / PT tutup yang
+  // tidak ter-cover PDDikti/PISN. Validator PISN dilewati, diganti
+  // pemeriksaan manual (verifier + alasan wajib, divalidasi di schema).
+  if (input.verificationMode === "manual") {
+    return {
+      eligible: Boolean(input.manualVerifier && input.manualVerificationReason),
+      exceptionApplied: false,
+      checks: [
+        {
+          code: "graduation_status",
+          label: "Verval manual (legacy/foreign/closed_institution)",
+          passed: Boolean(input.manualVerifier && input.manualVerificationReason),
+          reason: `Diverifikasi manual oleh ${input.manualVerifier ?? "-"} (${input.manualVerificationType ?? "manual"}): ${input.manualVerificationReason ?? "tanpa alasan"}`,
+          exceptionable: false,
+        },
+      ],
+      failedCodes: input.manualVerifier && input.manualVerificationReason ? [] : ["graduation_status"],
+    };
+  }
+
   const checks: EligibilityCheck[] = [];
 
   if (input.accreditationStatus !== undefined) {

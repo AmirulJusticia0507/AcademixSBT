@@ -15,6 +15,10 @@ export function buildDiplomaMetadata(input: DiplomaMetadataInput): DiplomaMetada
     attributes.push({ trait_type: "Tanggal Lulus", value: input.graduationDate });
   }
 
+  if (input.manualVerified) {
+    attributes.push({ trait_type: "Verval Manual", value: input.manualVerificationType ?? "manual" });
+  }
+
   return {
     name: `Ijazah ${input.degree} — ${input.fullName}`,
     description:
@@ -33,6 +37,11 @@ export function buildDiplomaMetadata(input: DiplomaMetadataInput): DiplomaMetada
       degree: input.degree,
       graduation_date: input.graduationDate,
       issued_at: input.issuedAt,
+      verification_mode: input.verificationMode ?? "standard",
+      manual_verified: Boolean(input.manualVerified),
+      manual_verification_type: input.manualVerificationType,
+      manual_verifier: input.manualVerifier,
+      manual_verification_reason: input.manualVerificationReason,
       schema: "academixsbt/diploma/v1",
     },
   };
