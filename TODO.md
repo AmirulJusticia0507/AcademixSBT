@@ -1,5 +1,7 @@
 # 📝 AcademixSBT — Todo List
 
+> 🌐 **Bahasa Indonesia** | [English](./TODO.en.md)
+>
 > Todo list terpisah dari [README.md](./readme.md). Prioritas: **P0** = inti PoC, **P1** = penting untuk demo/uji, **P2** = nice-to-have / riset.
 > Dasar kebutuhan: analisa gap [SIVIL](https://www.ijazahkemdikbud.web.id/), [PDDikti](https://pddikti.kemdiktisaintek.go.id/), dan [PISN](https://pisn.kemdiktisaintek.go.id/) — lihat section *Analisa Kekurangan Sistem Eksisting* di README.
 
@@ -81,7 +83,7 @@
 - [x] Tool migrasi/input massal dari data CSV kampus (validasi format sebelum minting massal).
 - [x] Integrasi SIAKAD kampus (sumber data kelulusan) untuk mengurangi input manual operator.
 - [x] Dukungan multi-chain / multi-institusi dengan registry issuer on-chain.
-- [ ] Versi English dari README & TODO (`README.en.md`).
+- [x] Versi English dari README & TODO (`README.en.md`).
 
 ---
 

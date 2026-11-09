@@ -1,5 +1,7 @@
 # 🎓 AcademixSBT — Decentralized Diploma & Credential Verification System
 
+> 🌐 **Bahasa Indonesia** | [English](./README.en.md)
+
 > **Proof of Concept (PoC)** sistem penerbitan dan verifikasi ijazah perguruan tinggi berbasis **Soulbound Token (SBT / ERC-5192 / ERC-721)** untuk menjamin ketersediaan data tanpa batas (zero downtime) dan keamanan anti-pemalsuan mutlak (non-transferable).
 
 ![Solidity](https://img.shields.io/badge/Solidity-^0.8.20-blue)
