@@ -167,9 +167,10 @@ See [TODO.md](./TODO.md) / [TODO.en.md](./TODO.en.md) for the prioritised task l
 
 ### Vercel deployment
 
-This repository is a monorepo. The root `vercel.json` installs and builds the
-Next.js application from `frontend/`. Alternatively, set the Vercel Root Directory
-to `frontend` and use the standard `npm install` and `npm run build` commands.
+This repository is a monorepo. Set the Vercel **Root Directory** to `frontend`
+(do not leave it at `.`). Then use the standard `npm install` and `npm run build`
+commands. This keeps Next.js manifests and Lambda paths relative to the frontend
+project and avoids nested `.next` output paths.
 
 - [x] SBT specification & hybrid database architecture
 - [x] Gap analysis of SIVIL/PDDikti/PISN
