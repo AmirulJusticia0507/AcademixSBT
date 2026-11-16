@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ConflictError, ValidationError } from "../src/lib/errors";
+import type { ExceptionApproval } from "../src/lib/exceptionDocuments";
 import type { SaveMintedDiplomaInput } from "../src/repositories/diplomaRepository";
 import { DiplomaService, type ChainWriter, type DiplomaStore } from "../src/services/diploma";
 import { LocalIpfsProvider } from "../src/services/ipfs";
@@ -25,7 +26,10 @@ const baseInput: MintDiplomaInput = {
   actor: "api-key",
 };
 
-function fakeStore(existing?: { token?: DiplomaRecord; certificate?: DiplomaRecord }) {
+function fakeStore(
+  existing?: { token?: DiplomaRecord; certificate?: DiplomaRecord },
+  approval: ExceptionApproval | null = null,
+) {
   const saved: SaveMintedDiplomaInput[] = [];
   const revoked: Array<{ tokenId: string; actor: string; txHash: string }> = [];
 
@@ -38,6 +42,8 @@ function fakeStore(existing?: { token?: DiplomaRecord; certificate?: DiplomaReco
     markRevoked: vi.fn(async (tokenId: string, actor: string, txHash: string) => {
       revoked.push({ tokenId, actor, txHash });
     }),
+    findExceptionApproval: vi.fn().mockResolvedValue(approval),
+    linkExceptionDocuments: vi.fn(),
   };
   return { store, saved, revoked };
 }
@@ -125,5 +131,50 @@ describe("DiplomaService", () => {
 
     expect(result.txHash).toBe("0x" + "2".repeat(64));
     expect(revoked).toEqual([{ tokenId: "1", actor: "0xissuer", txHash: result.txHash }]);
+  });
+
+  it("menolak exceptionApproved tanpa dokumen eksepsi yang disetujui", async () => {
+    const chain: ChainWriter = { mint: vi.fn(), revoke: vi.fn() };
+    const { store } = fakeStore();
+    const service = new DiplomaService(chain, ipfs, store);
+
+    await expect(
+      service.mint({
+        ...baseInput,
+        accreditationStatus: "tidak-terakreditasi",
+        exceptionApproved: true,
+        exceptionReason: "Prodi dalam proses reakreditasi",
+      }),
+    ).rejects.toBeInstanceOf(ValidationError);
+    expect(chain.mint).not.toHaveBeenCalled();
+  });
+
+  it("menerima exceptionApproved setelah dokumen disetujui dan menautkan token", async () => {
+    const chain: ChainWriter = {
+      mint: vi.fn().mockResolvedValue({
+        txHash: "0x" + "6".repeat(64),
+        issuerAddress: "0x00000000000000000000000000000000000000B2",
+      }),
+      revoke: vi.fn(),
+    };
+    const { store, saved } = fakeStore(undefined, {
+      approved: true,
+      documentTypes: ["sk_yudisium", "sptjm"],
+      missingDocuments: [],
+      approvedBy: "Rektor Universitas Contoh",
+      approvedAt: "2026-11-16T00:00:00.000Z",
+    });
+    const service = new DiplomaService(chain, ipfs, store);
+
+    const result = await service.mint({
+      ...baseInput,
+      accreditationStatus: "tidak-terakreditasi",
+      exceptionApproved: true,
+      exceptionReason: "Prodi dalam proses reakreditasi",
+    });
+
+    expect(result.tokenId).toBe("1");
+    expect(saved).toHaveLength(1);
+    expect(store.linkExceptionDocuments).toHaveBeenCalledWith("IJZ-2026-001", "1");
   });
 });

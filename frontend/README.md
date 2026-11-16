@@ -26,6 +26,18 @@ NEXT_PUBLIC_API_URL="http://localhost:4000"
 
 Tanpa `NEXT_PUBLIC_CONTRACT_ADDRESS`, portal tetap tampil dengan banner konfigurasi.
 
+## Progressive Web App (PWA)
+
+Build production menyediakan web app manifest, ikon aplikasi, dan service worker.
+Jalankan `npm run build` lalu `npm run start` untuk mencoba instalasi PWA; service
+worker memang tidak didaftarkan saat development. Browser harus mengakses situs melalui
+HTTPS (localhost diperbolehkan) agar instalasi tersedia.
+
+Service worker menyimpan shell offline dan aset JavaScript/CSS statis Next.js yang
+pernah dimuat. Jika jaringan putus, navigasi menampilkan halaman offline. Status
+verifikasi blockchain/IPFS tidak disimpan sebagai hasil offline, agar status ijazah
+tidak tampak valid berdasarkan data lama.
+
 ## Fitur P0
 
 | Fitur | Implementasi |

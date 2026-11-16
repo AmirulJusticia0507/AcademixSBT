@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { isContractConfigured } from "@/lib/config";
+import { PwaRegistration } from "@/components/PwaRegistration";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,10 +14,15 @@ export const metadata: Metadata = {
     "Portal verifikasi ijazah publik berbasis Soulbound Token (ERC-5192) — read-only via blockchain, tanpa login wallet, dengan bukti hash SHA-256.",
 };
 
+export const viewport = {
+  themeColor: "#111827",
+};
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="id">
       <body>
+        <PwaRegistration />
         <header className="site-header">
           <div className="container">
             <Link href="/" className="brand">

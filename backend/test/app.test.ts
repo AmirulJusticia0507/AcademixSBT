@@ -21,6 +21,7 @@ const config: AppConfig = {
   ipfsProvider: "local",
   ipfsGateway: "https://gateway.pinata.cloud/ipfs",
   localIpfsDir: "./storage/ipfs",
+  documentArchiveDir: "./storage/documents",
   chains: { list: () => [{ chainId: 80002, name: "Polygon Amoy", rpcUrl: "http://localhost:8545", contractAddress: "0x00000000000000000000000000000000000000B2" }], get: () => undefined, primary: () => ({ chainId: 80002, name: "Polygon Amoy", rpcUrl: "http://localhost:8545", contractAddress: "0x00000000000000000000000000000000000000B2" }), resolve: () => ({ chainId: 80002, name: "Polygon Amoy", rpcUrl: "http://localhost:8545", contractAddress: "0x00000000000000000000000000000000000000B2" }) } as any,
 };
 
@@ -90,6 +91,62 @@ function buildDeps(overrides: Partial<AppDependencies> = {}) {
         mintedAt: new Date().toISOString(),
       }),
       revoke: vi.fn().mockResolvedValue({ tokenId: "1", txHash: "0x" + "5".repeat(64) }),
+    },
+    exceptions: {
+      uploadDocument: vi.fn().mockResolvedValue({
+        id: "doc-1",
+        certificateNumber: "IJZ-2026-001",
+        tokenId: null,
+        documentType: "sptjm",
+        fileName: "sptjm.pdf",
+        mimeType: "application/pdf",
+        sizeBytes: PDF.length,
+        documentHash: hashDocument(PDF),
+        archiveId: "a".repeat(64) + ".pdf",
+        note: null,
+        approvalStatus: "pending",
+        uploadedBy: "0xissuer",
+        approvedBy: null,
+        approvedAt: null,
+        rejectionReason: null,
+        createdAt: new Date().toISOString(),
+      }),
+      getCase: vi.fn().mockResolvedValue({
+        certificateNumber: "IJZ-2026-001",
+        tokenId: null,
+        status: "pending",
+        requiredComplete: false,
+        missingDocuments: ["sk_yudisium", "ba_sidang"],
+        canMintWithException: false,
+        approvedBy: null,
+        approvedAt: null,
+        rejectionReason: null,
+        documents: [],
+      }),
+      approve: vi.fn().mockResolvedValue({
+        certificateNumber: "IJZ-2026-001",
+        tokenId: null,
+        status: "approved",
+        requiredComplete: true,
+        missingDocuments: [],
+        canMintWithException: true,
+        approvedBy: "Rektor",
+        approvedAt: new Date().toISOString(),
+        rejectionReason: null,
+        documents: [],
+      }),
+      reject: vi.fn().mockResolvedValue({
+        certificateNumber: "IJZ-2026-001",
+        tokenId: null,
+        status: "rejected",
+        requiredComplete: false,
+        missingDocuments: ["sptjm"],
+        canMintWithException: false,
+        approvedBy: null,
+        approvedAt: null,
+        rejectionReason: "Dokumen tidak sesuai",
+        documents: [],
+      }),
     },
   } as unknown as AppDependencies;
 
@@ -328,6 +385,85 @@ describe("HTTP API", () => {
       .expect(200);
 
     expect(response.body.logs).toHaveLength(1);
+  });
+
+  it("POST /api/exceptions/:certificateNumber/documents mengunggah dokumen pendukung", async () => {
+    const deps = buildDeps();
+    const response = await request(createApp(deps))
+      .post("/api/exceptions/IJZ-2026-001/documents")
+      .set("x-api-key", "test-key")
+      .field("documentType", "sptjm")
+      .field("note", "SPTJM pimpinan PT")
+      .attach("document", PDF, "sptjm.pdf")
+      .expect(201);
+
+    expect(response.body.documentType).toBe("sptjm");
+    expect(deps.exceptions.uploadDocument).toHaveBeenCalledWith(
+      expect.objectContaining({
+        certificateNumber: "IJZ-2026-001",
+        documentType: "sptjm",
+        fileName: "sptjm.pdf",
+        content: PDF,
+      }),
+    );
+  });
+
+  it("POST /api/exceptions/:certificateNumber/documents menolak tipe dokumen tidak dikenal", async () => {
+    const response = await request(createApp(buildDeps()))
+      .post("/api/exceptions/IJZ-2026-001/documents")
+      .set("x-api-key", "test-key")
+      .field("documentType", "ktp")
+      .attach("document", PDF, "ktp.pdf")
+      .expect(400);
+
+    expect(response.body.error.code).toBe("VALIDATION_ERROR");
+  });
+
+  it("POST /api/exceptions/:certificateNumber/approve membutuhkan nama pimpinan PT", async () => {
+    await request(createApp(buildDeps()))
+      .post("/api/exceptions/IJZ-2026-001/approve")
+      .set("x-api-key", "test-key")
+      .send({})
+      .expect(400);
+
+    const deps = buildDeps();
+    const response = await request(createApp(deps))
+      .post("/api/exceptions/IJZ-2026-001/approve")
+      .set("x-api-key", "test-key")
+      .send({ approver: "Rektor Universitas Contoh" })
+      .expect(200);
+
+    expect(response.body.status).toBe("approved");
+    expect(deps.exceptions.approve).toHaveBeenCalledWith(
+      "IJZ-2026-001",
+      "Rektor Universitas Contoh",
+    );
+  });
+
+  it("GET /api/exceptions/:certificateNumber mengembalikan status case", async () => {
+    const response = await request(createApp(buildDeps()))
+      .get("/api/exceptions/IJZ-2026-001")
+      .set("x-api-key", "test-key")
+      .expect(200);
+
+    expect(response.body.status).toBe("pending");
+    expect(response.body.missingDocuments).toContain("sk_yudisium");
+  });
+
+  it("POST /api/exceptions/:certificateNumber/reject mencatat alasan", async () => {
+    const deps = buildDeps();
+    const response = await request(createApp(deps))
+      .post("/api/exceptions/IJZ-2026-001/reject")
+      .set("x-api-key", "test-key")
+      .send({ reason: "Dokumen tidak sesuai", approver: "Rektor" })
+      .expect(200);
+
+    expect(response.body.status).toBe("rejected");
+    expect(deps.exceptions.reject).toHaveBeenCalledWith(
+      "IJZ-2026-001",
+      "Dokumen tidak sesuai",
+      "Rektor",
+    );
   });
 
   it("route tidak dikenal mengembalikan 404", async () => {

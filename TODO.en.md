@@ -59,7 +59,7 @@
 - [x] Eligibility checklist before minting: accredited program, Graduated status, graduation date, study duration, minimum credits & GPA, NIK/passport
 - [x] Ineligible-data report with specific reasons
 - [x] Data correction flow in PostgreSQL + audit log
-- [ ] (Optional) Documented exception flow: SK Yudisium/BA Sidang + SPTJM upload — *exception flag + reason exist; document upload pending*
+- [x] (Optional) Documented exception flow: SK Yudisium/BA Sidang + SPTJM upload, leadership approval, audit log — see [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
 
 ### Integration & Interoperability
 

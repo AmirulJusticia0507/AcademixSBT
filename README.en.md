@@ -173,6 +173,7 @@ See [TODO.md](./TODO.md) / [TODO.en.md](./TODO.en.md) for the prioritised task l
 - [x] Public read-only verification portal
 - [x] Revocation feature (on-chain + visible in portal)
 - [x] End-to-end minting validated locally (backend → IPFS → on-chain → graduate wallet) — see [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md)
+- [x] Documented exception flow (SK Yudisium/BA Sidang + SPTJM + leadership approval) — see [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md)
 
 ---
 

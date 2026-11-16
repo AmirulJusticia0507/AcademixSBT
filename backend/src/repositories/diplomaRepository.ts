@@ -1,5 +1,10 @@
 import type { PoolClient } from "pg";
 import type { Database } from "../db";
+import {
+  missingRequiredDocumentTypes,
+  type ExceptionApproval,
+  type ExceptionDocumentType,
+} from "../lib/exceptionDocuments";
 import type { DiplomaRecord, MintedDiploma } from "../types";
 
 interface DiplomaRow {
@@ -164,6 +169,58 @@ export class DiplomaRepository {
       [certificateNumber],
     );
     return rows[0] ? mapDiploma(rows[0]) : null;
+  }
+
+  /** P1: cek dokumen eksepsi yang sudah lengkap & disetujui pimpinan PT. */
+  async findExceptionApproval(certificateNumber: string): Promise<ExceptionApproval | null> {
+    const rows = await this.db.query<{
+      document_type: ExceptionDocumentType;
+      approval_status: string;
+      approved_by: string | null;
+      approved_at: Date | null;
+    }>(
+      `SELECT document_type, approval_status, approved_by, approved_at
+       FROM exception_documents
+       WHERE certificate_number = $1`,
+      [certificateNumber],
+    );
+
+    if (rows.length === 0) return null;
+
+    const documentTypes = Array.from(new Set(rows.map((row) => row.document_type)));
+    const missingDocuments = missingRequiredDocumentTypes(documentTypes);
+    const approvedRow = rows.find((row) => row.approval_status === "approved" && row.approved_by);
+
+    return {
+      approved:
+        missingDocuments.length === 0 &&
+        rows.every((row) => row.approval_status === "approved"),
+      documentTypes,
+      missingDocuments,
+      approvedBy: approvedRow?.approved_by ?? null,
+      approvedAt: approvedRow?.approved_at ? approvedRow.approved_at.toISOString() : null,
+    };
+  }
+
+  /** P1: tautkan dokumen eksepsi ke Token ID setelah minting sukses. */
+  async linkExceptionDocuments(certificateNumber: string, tokenId: string): Promise<void> {
+    await this.db.transaction(async (client) => {
+      const result = await client.query(
+        `UPDATE exception_documents
+         SET token_id = $2
+         WHERE certificate_number = $1 AND token_id IS NULL`,
+        [certificateNumber, tokenId],
+      );
+      if (result.rowCount === 0) return;
+
+      await this.insertAuditLog(client, {
+        actor: "system",
+        action: "EXCEPTION_LINKED_TO_TOKEN",
+        entityType: "exception_case",
+        entityId: certificateNumber,
+        metadata: { certificateNumber, tokenId },
+      });
+    });
   }
 
   async markRevoked(tokenId: string, actor: string, txHash: string): Promise<void> {

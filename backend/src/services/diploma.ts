@@ -7,6 +7,7 @@ import type { IpfsProvider } from "./ipfs";
 import { ipfsUri } from "./ipfs";
 import { validateEligibility } from "./eligibility";
 import { encryptSensitive, loadEncryptionKey } from "../lib/crypto";
+import type { ExceptionApproval } from "../lib/exceptionDocuments";
 
 export interface ChainWriter {
   mint(to: string, tokenId: string, uri: string): Promise<{ txHash: string; issuerAddress: string }>;
@@ -18,6 +19,10 @@ export interface DiplomaStore {
   findByCertificateNumber(certificateNumber: string): Promise<DiplomaRecord | null>;
   saveMinted(input: SaveMintedDiplomaInput): Promise<void>;
   markRevoked(tokenId: string, actor: string, txHash: string): Promise<void>;
+  /** P1: cek persetujuan dokumen eksepsi sebelum minting. */
+  findExceptionApproval?(certificateNumber: string): Promise<ExceptionApproval | null>;
+  /** P1: tautkan dokumen eksepsi ke Token ID setelah minting sukses. */
+  linkExceptionDocuments?(certificateNumber: string, tokenId: string): Promise<void>;
 }
 
 const MAX_DOCUMENT_BYTES = 10 * 1024 * 1024;
@@ -51,6 +56,22 @@ export class DiplomaService {
     }
     if (await this.store.findByCertificateNumber(input.certificateNumber)) {
       throw new ConflictError(`Nomor ijazah ${input.certificateNumber} sudah tercatat`);
+    }
+
+    // P1: eksepsi hanya boleh dipakai jika dokumen pendukung lengkap dan
+    // disetujui pimpinan PT (SK Yudisium/BA Sidang + SPTJM).
+    if (input.exceptionApproved) {
+      const approval = (await this.store.findExceptionApproval?.(input.certificateNumber)) ?? null;
+      if (!approval?.approved) {
+        throw new ValidationError(
+          "exceptionApproved=true memerlukan dokumen SK Yudisium/BA Sidang + SPTJM yang disetujui pimpinan PT",
+          {
+            certificateNumber: input.certificateNumber,
+            missingDocuments: approval?.missingDocuments ?? ["sk_yudisium", "ba_sidang", "sptjm"],
+            approvedBy: approval?.approvedBy ?? null,
+          },
+        );
+      }
     }
 
     const documentHash = hashDocument(input.document);
@@ -120,6 +141,10 @@ export class DiplomaService {
         passportEncrypted,
       },
     });
+
+    if (input.exceptionApproved) {
+      await this.store.linkExceptionDocuments?.(input.certificateNumber, input.tokenId);
+    }
 
     return minted;
   }

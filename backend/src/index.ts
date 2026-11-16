@@ -2,13 +2,18 @@ import { createApp } from "./app";
 import { config } from "./config";
 import { Database } from "./db";
 import { DiplomaRepository } from "./repositories/diplomaRepository";
+import { ExceptionRepository } from "./repositories/exceptionRepository";
 import { BlockchainService } from "./services/blockchain";
 import { DiplomaService } from "./services/diploma";
+import { DocumentArchive } from "./services/documentArchive";
+import { ExceptionService } from "./services/exception";
 import { createIpfsProvider } from "./services/ipfs";
 import { VerificationService } from "./services/verification";
 
 const db = new Database(config.databaseUrl);
 const repo = new DiplomaRepository(db);
+const exceptionRepo = new ExceptionRepository(db);
+const documentArchive = new DocumentArchive(config.documentArchiveDir);
 const ipfs = createIpfsProvider({
   provider: config.ipfsProvider,
   localDir: config.localIpfsDir,
@@ -25,8 +30,9 @@ const chain = new BlockchainService({
 });
 const verification = new VerificationService(chain, ipfs);
 const diploma = new DiplomaService(chain, ipfs, repo);
+const exceptions = new ExceptionService(exceptionRepo, documentArchive);
 
-const app = createApp({ config, db, repo, ipfs, chain, verification, diploma });
+const app = createApp({ config, db, repo, ipfs, chain, verification, diploma, exceptions });
 
 const server = app.listen(config.port, () => {
   console.log(`AcademixSBT API listening on http://localhost:${config.port}`);

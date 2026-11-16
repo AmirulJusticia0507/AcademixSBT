@@ -46,6 +46,13 @@ mengembalikan `503` (berguna untuk cek UI/health).
 | POST | `/api/issuers` | `x-api-key` | Daftarkan wallet institusi on-chain |
 | GET | `/api/issuers/:address` | – | Cek status issuer |
 | GET | `/api/audit-logs` | `x-api-key` | Audit log terbaru |
+| POST | `/api/exceptions/:certificateNumber/documents` | `x-api-key` | Upload SK Yudisium/BA Sidang/SPTJM (alur eksepsi) |
+| GET | `/api/exceptions/:certificateNumber` | `x-api-key` | Status kelengkapan & persetujuan eksepsi |
+| POST | `/api/exceptions/:certificateNumber/approve` | `x-api-key` | Persetujuan pimpinan PT |
+| POST | `/api/exceptions/:certificateNumber/reject` | `x-api-key` | Tolak eksepsi + alasan |
+
+Alur eksepsi lengkap (termasuk syarat dokumen dan contoh `curl`): lihat
+[`docs/EXCEPTION_FLOW.md`](../docs/EXCEPTION_FLOW.md).
 
 ### Contoh minting
 
@@ -88,9 +95,10 @@ Metadata yang di-upload ke IPFS:
 ```text
 backend/
 ├── migrations/001_init.sql       # institutions, graduates, diploma_tokens, audit_logs
+├── migrations/004_add_exception_documents.sql  # alur eksepsi (SK/BA + SPTJM)
 ├── src/
 │   ├── app.ts                    # routes Express
-│   ├── services/                 # blockchain, IPFS, minting, verification
+│   ├── services/                 # blockchain, IPFS, minting, verification, exception
 │   ├── repositories/             # query PostgreSQL + audit log
 │   └── lib/                      # hash SHA-256, metadata, validasi zod, ABI
 └── test/                         # unit + HTTP (supertest) + integrasi PostgreSQL

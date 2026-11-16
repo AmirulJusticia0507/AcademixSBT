@@ -21,6 +21,7 @@ export interface AppConfig {
   pinataApiKey?: string;
   pinataSecretKey?: string;
   localIpfsDir: string;
+  documentArchiveDir: string;
   siakadApiUrl?: string;
   siakadApiKey?: string;
   chains: ChainRegistry;
@@ -63,6 +64,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     pinataApiKey: optional(env.PINATA_API_KEY),
     pinataSecretKey: optional(env.PINATA_SECRET_KEY),
     localIpfsDir: optional(env.LOCAL_IPFS_DIR) ?? "./storage/ipfs",
+    documentArchiveDir: optional(env.DOCUMENT_ARCHIVE_DIR) ?? "./storage/documents",
     siakadApiUrl: optional(env.SIAKAD_API_URL),
     siakadApiKey: optional(env.SIAKAD_API_KEY),
     chains: new ChainRegistry(

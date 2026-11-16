@@ -8,6 +8,10 @@ import { NotFoundError, ValidationError } from "./lib/errors";
 import {
   auditQuerySchema,
   batchVerifySchema,
+  certificateNumberParamSchema,
+  exceptionApprovalSchema,
+  exceptionDocumentSchema,
+  exceptionRejectionSchema,
   issuerSchema,
   mintDiplomaSchema,
   tokenIdParamSchema,
@@ -20,6 +24,7 @@ import { resolveRole } from "./middleware/rbac";
 import type { DiplomaRepository } from "./repositories/diplomaRepository";
 import type { DiplomaService } from "./services/diploma";
 import type { IpfsProvider } from "./services/ipfs";
+import type { ExceptionService } from "./services/exception";
 import type { VerificationService } from "./services/verification";
 import { validateEligibility } from "./services/eligibility";
 import { CSV_TEMPLATE, validateCsvImport } from "./services/csvImport";
@@ -57,6 +62,7 @@ export interface AppDependencies {
   chain: ChainRoutes;
   verification: VerificationService;
   diploma: DiplomaService;
+  exceptions: ExceptionService;
   siakad?: SiakadProvider;
 }
 
@@ -77,6 +83,26 @@ const upload = multer({
 function requireFile(file: Express.Multer.File | undefined): Express.Multer.File {
   if (!file) {
     throw new ValidationError('Berkas ijazah wajib diunggah pada field "document"');
+  }
+  return file;
+}
+
+const supportingUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: MAX_UPLOAD_BYTES, files: 1 },
+  fileFilter: (_req, file, callback) => {
+    const allowed = ["application/pdf", "image/png", "image/jpeg"];
+    if (!allowed.includes(file.mimetype)) {
+      callback(new ValidationError("Dokumen pendukung harus PDF, PNG, atau JPEG"));
+      return;
+    }
+    callback(null, true);
+  },
+});
+
+function requireSupportingFile(file: Express.Multer.File | undefined): Express.Multer.File {
+  if (!file) {
+    throw new ValidationError('Dokumen pendukung wajib diunggah pada field "document"');
   }
   return file;
 }
@@ -145,6 +171,8 @@ export function createApp(deps: AppDependencies): Express {
         verifyToken: "/api/verify/:tokenId",
         verifyWallet: "/api/verify/wallet/:address",
         validateEligibility: "POST /api/diplomas/validate",
+        exceptionDocuments: "POST /api/exceptions/:certificateNumber/documents",
+        exceptionApproval: "POST /api/exceptions/:certificateNumber/approve",
       },
     });
   });
@@ -393,6 +421,61 @@ export function createApp(deps: AppDependencies): Express {
     }),
   );
 
+  // ===== P1: alur eksepsi terdokumentasi =====
+  // Dokumen pendukung wajib lengkap sebelum minting dengan exceptionApproved=true.
+  app.post(
+    "/api/exceptions/:certificateNumber/documents",
+    writeAuth,
+    supportingUpload.single("document"),
+    asyncHandler(async (req, res) => {
+      const { certificateNumber } = certificateNumberParamSchema.parse(req.params);
+      const body = exceptionDocumentSchema.parse(req.body);
+      const file = requireSupportingFile(req.file);
+
+      const document = await deps.exceptions.uploadDocument({
+        certificateNumber,
+        documentType: body.documentType,
+        fileName: file.originalname,
+        mimeType: file.mimetype,
+        content: file.buffer,
+        note: body.note,
+        uploadedBy: body.uploadedBy ?? deps.config.issuerAddress ?? "api-key",
+      });
+
+      res.status(201).json(document);
+    }),
+  );
+
+  app.get(
+    "/api/exceptions/:certificateNumber",
+    writeAuth,
+    asyncHandler(async (req, res) => {
+      const { certificateNumber } = certificateNumberParamSchema.parse(req.params);
+      res.json(await deps.exceptions.getCase(certificateNumber));
+    }),
+  );
+
+  app.post(
+    "/api/exceptions/:certificateNumber/approve",
+    writeAuth,
+    asyncHandler(async (req, res) => {
+      const { certificateNumber } = certificateNumberParamSchema.parse(req.params);
+      const { approver } = exceptionApprovalSchema.parse(req.body);
+      res.json(await deps.exceptions.approve(certificateNumber, approver));
+    }),
+  );
+
+  app.post(
+    "/api/exceptions/:certificateNumber/reject",
+    writeAuth,
+    asyncHandler(async (req, res) => {
+      const { certificateNumber } = certificateNumberParamSchema.parse(req.params);
+      const body = exceptionRejectionSchema.parse(req.body);
+      const actor = body.approver ?? deps.config.issuerAddress ?? "api-key";
+      res.json(await deps.exceptions.reject(certificateNumber, body.reason, actor));
+    }),
+  );
+
   app.post(
     "/api/issuers",
     writeAuth,
@@ -435,6 +518,21 @@ export function createApp(deps: AppDependencies): Express {
           },
         },
         "/api/diplomas/validate": { post: { summary: "Cek eligibility ala PISN (admin key)" } },
+        "/api/exceptions/{certificateNumber}/documents": {
+          post: {
+            summary:
+              "Upload dokumen eksepsi: sk_yudisium | ba_sidang | sptjm (admin key, field document)",
+          },
+        },
+        "/api/exceptions/{certificateNumber}": {
+          get: { summary: "Status dokumen & persetujuan eksepsi (admin key)" },
+        },
+        "/api/exceptions/{certificateNumber}/approve": {
+          post: { summary: "Setujui eksepsi oleh pimpinan PT (admin key)" },
+        },
+        "/api/exceptions/{certificateNumber}/reject": {
+          post: { summary: "Tolak eksepsi beserta alasannya (admin key)" },
+        },
         "/api/health": { get: { summary: "Health check DB + blockchain + IPFS" } },
       },
     });

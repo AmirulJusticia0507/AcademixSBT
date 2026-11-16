@@ -82,3 +82,29 @@ export const batchVerifySchema = z.object({
 export const auditQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(200).default(50),
 });
+
+// ===== P1: alur eksepsi =====
+export const certificateNumberParamSchema = z.object({
+  certificateNumber: z
+    .string()
+    .trim()
+    .min(3)
+    .max(100)
+    .regex(/^[A-Za-z0-9._/-]+$/, "Nomor ijazah mengandung karakter tidak valid"),
+});
+
+export const exceptionDocumentSchema = z.object({
+  documentType: z.enum(["sk_yudisium", "ba_sidang", "sptjm"]),
+  note: z.string().trim().max(500).optional(),
+  uploadedBy: z.string().trim().min(2).max(100).optional(),
+});
+
+export const exceptionApprovalSchema = z.object({
+  approver: z.string().trim().min(3).max(100),
+  note: z.string().trim().max(500).optional(),
+});
+
+export const exceptionRejectionSchema = z.object({
+  reason: z.string().trim().min(3).max(500),
+  approver: z.string().trim().min(3).max(100).optional(),
+});

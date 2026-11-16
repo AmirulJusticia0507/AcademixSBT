@@ -405,6 +405,7 @@ Ringkasan:
 - [x] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
 - [x] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah) — on-chain + tampil di portal.
 - [x] Minting end-to-end lokal tervalidasi (backend → IPFS → on-chain → wallet alumni) — lihat [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
+- [x] Alur eksepsi terdokumentasi (SK Yudisium/BA Sidang + SPTJM + persetujuan pimpinan PT) — lihat [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
 - [ ] Todo turunan dari analisa SIVIL/PDDikti/PISN (QR/Token ID, hash SHA-256, validator ala PISN, API HRD, dll.) — lihat [TODO.md](./TODO.md).
 
 ---
