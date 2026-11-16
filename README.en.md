@@ -165,6 +165,12 @@ academix-sbt/
 
 See [TODO.md](./TODO.md) / [TODO.en.md](./TODO.en.md) for the prioritised task list (P0/P1/P2) and milestones M1M5.
 
+### Vercel deployment
+
+This repository is a monorepo. The root `vercel.json` installs and builds the
+Next.js application from `frontend/`. Alternatively, set the Vercel Root Directory
+to `frontend` and use the standard `npm install` and `npm run build` commands.
+
 - [x] SBT specification & hybrid database architecture
 - [x] Gap analysis of SIVIL/PDDikti/PISN
 - [x] ERC-5192 `DiplomaSBT` contract + 15 passing Hardhat tests (local)

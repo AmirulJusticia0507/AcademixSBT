@@ -391,6 +391,12 @@ academix-sbt/
 
 ---
 
+## Vercel deployment
+
+Repository ini adalah monorepo. File `vercel.json` di root mengarahkan proses
+install dan build ke aplikasi Next.js di `frontend/`. Alternatifnya, atur Vercel
+Root Directory ke `frontend` lalu gunakan `npm install` dan `npm run build`.
+
 ##  Roadmap / Todo List
 
 > Detail todo list dengan prioritas (P0/P1/P2) dan milestone dipisahkan di **[TODO.md](./TODO.md)**.
