@@ -18,7 +18,7 @@ Isi `.env`:
 ```env
 NEXT_PUBLIC_RPC_URL="https://rpc-amoy.polygon.technology"
 NEXT_PUBLIC_CHAIN_ID=80002
-NEXT_PUBLIC_CONTRACT_ADDRESS="0x..."   # hasil deploy contracts/
+NEXT_PUBLIC_CONTRACT_ADDRESS="0x..."   # opsional; default memakai kontrak Polygon Amoy terverifikasi
 NEXT_PUBLIC_EXPLORER_URL="https://amoy.polygonscan.com"
 NEXT_PUBLIC_IPFS_GATEWAY="https://gateway.pinata.cloud/ipfs"
 NEXT_PUBLIC_API_URL="http://localhost:4000"

@@ -19,6 +19,8 @@ function env(name: string): string {
   return (process.env[name] || "").trim();
 }
 
+const DEFAULT_CONTRACT_ADDRESS = "0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa";
+
 // Default targets for "Amirul Putra's First App": Arbitrum One & Polygon PoS.
 const CANDIDATES: Array<Omit<ChainConfig, "contractAddress"> & { contractEnv: string; contractFallback?: string }> = [
   {
@@ -40,7 +42,7 @@ const CANDIDATES: Array<Omit<ChainConfig, "contractAddress"> & { contractEnv: st
 ];
 
 function legacyChain(): ChainConfig | null {
-  const contractAddress = env("NEXT_PUBLIC_CONTRACT_ADDRESS");
+  const contractAddress = env("NEXT_PUBLIC_CONTRACT_ADDRESS") || DEFAULT_CONTRACT_ADDRESS;
   const chainId = Number(env("NEXT_PUBLIC_CHAIN_ID") || 80002);
   const rpcUrl = env("NEXT_PUBLIC_RPC_URL") || "https://rpc-amoy.polygon.technology";
   const explorerUrl = trimSlash(env("NEXT_PUBLIC_EXPLORER_URL") || "https://amoy.polygonscan.com");
