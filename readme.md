@@ -1,6 +1,6 @@
-﻿# ðŸŽ“ AcademixSBT â€” Decentralized Diploma & Credential Verification System
+#  AcademixSBT  Decentralized Diploma & Credential Verification System
 
-> ðŸŒ **Bahasa Indonesia** | [English](./README.en.md)
+>  **Bahasa Indonesia** | [English](./README.en.md)
 
 > **Proof of Concept (PoC)** sistem penerbitan dan verifikasi ijazah perguruan tinggi berbasis **Soulbound Token (SBT / ERC-5192 / ERC-721)** untuk menjamin ketersediaan data tanpa batas (zero downtime) dan keamanan anti-pemalsuan mutlak (non-transferable).
 
@@ -12,7 +12,7 @@
 
 ---
 
-## ðŸ“‘ Daftar Isi
+##  Daftar Isi
 
 - [Executive Summary](#-executive-summary)
 - [Problem & Solution](#-problem--solution)
@@ -29,7 +29,7 @@
 
 ---
 
-## ðŸ“Œ Executive Summary
+##  Executive Summary
 
 Verifikasi ijazah konvensional sangat bergantung pada ketersediaan server pusat (seperti PPDikti/SIVIL). Jika server down atau mengalami gangguan jaringan, proses validasi ijazah oleh instansi atau penyedia kerja akan terhambat.
 
@@ -45,7 +45,7 @@ AcademixSBT menyelesaikan permasalahan ini dengan pendekatan **Hybrid Web2/Web3*
 
 ---
 
-## ðŸ› ï¸ Tech Stack
+##  Tech Stack
 
 ### Backend & Web3 Core
 
@@ -68,33 +68,33 @@ AcademixSBT menyelesaikan permasalahan ini dengan pendekatan **Hybrid Web2/Web3*
 
 ---
 
-## ðŸ¤– Agents & Roles
+##  Agents & Roles
 
 Sistem ini membagi aktor dan agen pengelola ke dalam beberapa tingkatan hak akses:
 
-| ðŸ¢ Institution Agent (Kampus / Registrator) | ðŸ‘¨â€ðŸŽ“ Alumni / Graduate (Pemilik Ijazah) | ðŸ” Public / Verifier (HRD / Instansi) |
+|  Institution Agent (Kampus / Registrator) |  Alumni / Graduate (Pemilik Ijazah) |  Public / Verifier (HRD / Instansi) |
 |---|---|---|
-| â€¢ Mendaftarkan metadata | â€¢ Menerima SBT ijazah | â€¢ Memindai QR / Wallet ID |
-| â€¢ Melakukan Minting SBT | â€¢ Mengatur visibilitas data publik | â€¢ Memverifikasi status SBT langsung dari Blockchain secara real-time |
-| â€¢ Revoke/Burn (jika terjadi kesalahan) | â€¢ Membagikan link/QR | |
+|  Mendaftarkan metadata |  Menerima SBT ijazah |  Memindai QR / Wallet ID |
+|  Melakukan Minting SBT |  Mengatur visibilitas data publik |  Memverifikasi status SBT langsung dari Blockchain secara real-time |
+|  Revoke/Burn (jika terjadi kesalahan) |  Membagikan link/QR | |
 
 ---
 
-## ðŸ—ï¸ System Architecture & Data Flow
+##  System Architecture & Data Flow
 
 ### Architecture Diagram
 
 ```text
 [ Frontend: Portal Kampus / Verifier ]
-         â”‚                    â”‚
+
   (REST API / Web3)     (Read-Only RPC Query)
-         â”‚                    â”‚
-         â–¼                    â–¼
-[ Backend API ] â”€â”€â”€â”€â”€â”€â–º [ Polygon / EVM Testnet ]
-         â”‚              (Smart Contract ERC-5192)
-         â–¼                    â–²
-[ PostgreSQL ]                â”‚ (Fetch Metadata)
- (Relational DB)             â–¼
+
+
+[ Backend API ]  [ Polygon / EVM Testnet ]
+                       (Smart Contract ERC-5192)
+
+[ PostgreSQL ]                 (Fetch Metadata)
+ (Relational DB)
                        [ IPFS Storage ]
                     (Pinata / Decentralized)
 ```
@@ -117,7 +117,7 @@ Sistem ini membagi aktor dan agen pengelola ke dalam beberapa tingkatan hak akse
 
 ---
 
-## ðŸ—„ï¸ Database Schema & Smart Contract Data Structure
+##  Database Schema & Smart Contract Data Structure
 
 ### 1. PostgreSQL Schema (Web2 Storage)
 
@@ -219,7 +219,7 @@ contract DiplomaSBT is ERC721, AccessControl {
 
 ---
 
-## ðŸš€ Getting Started & Local Development Guide
+##  Getting Started & Local Development Guide
 
 ### Prerequisites
 
@@ -239,9 +239,9 @@ cd academix-sbt-poc
 #### 2. Environment Setup (`.env`)
 
 Salin contoh env lalu sesuaikan:
-- `backend/.env.example` â†’ `backend/.env` (PORT 4000, `DATABASE_URL`, `CONTRACT_ADDRESS`, `RPC_URL`, `IPFS_PROVIDER`, `ADMIN_API_KEY`, dll.)
-- `frontend/.env.example` â†’ `frontend/.env.local` (`NEXT_PUBLIC_API_URL=http://localhost:4000`, `NEXT_PUBLIC_CONTRACT_ADDRESS`, `NEXT_PUBLIC_RPC_URL`, dll.)
-- `contracts/.env.example` â†’ `contracts/.env` (untuk compile/deploy kontrak: `PRIVATE_KEY`, `RPC_URL`)
+- `backend/.env.example`  `backend/.env` (PORT 4000, `DATABASE_URL`, `CONTRACT_ADDRESS`, `RPC_URL`, `IPFS_PROVIDER`, `ADMIN_API_KEY`, dll.)
+- `frontend/.env.example`  `frontend/.env.local` (`NEXT_PUBLIC_API_URL=http://localhost:4000`, `NEXT_PUBLIC_CONTRACT_ADDRESS`, `NEXT_PUBLIC_RPC_URL`, dll.)
+- `contracts/.env.example`  `contracts/.env` (untuk compile/deploy kontrak: `PRIVATE_KEY`, `RPC_URL`)
 
 #### 3. Install Dependencies
 
@@ -282,13 +282,13 @@ Jika menggunakan [Taskfile](https://taskfile.dev) (`task` CLI terpasang): `task 
 
 ---
 
-## ðŸ” Analisa Kekurangan Sistem Eksisting (SIVIL / PDDikti / PISN)
+##  Analisa Kekurangan Sistem Eksisting (SIVIL / PDDikti / PISN)
 
 Analisa berdasarkan situs resmi/portal yang dikunjungi:
 
-- [SIVIL â€” ijazahkemdikbud.web.id](https://www.ijazahkemdikbud.web.id/) (Sistem Verifikasi Ijazah secara Elektronik)
-- [PDDikti â€” pddikti.kemdiktisaintek.go.id](https://pddikti.kemdiktisaintek.go.id/) (Pangkalan Data Pendidikan Tinggi)
-- [PISN â€” pisn.kemdiktisaintek.go.id](https://pisn.kemdiktisaintek.go.id/) (Penomoran Ijazah dan Sertifikat Profesi Nasional)
+- [SIVIL  ijazahkemdikbud.web.id](https://www.ijazahkemdikbud.web.id/) (Sistem Verifikasi Ijazah secara Elektronik)
+- [PDDikti  pddikti.kemdiktisaintek.go.id](https://pddikti.kemdiktisaintek.go.id/) (Pangkalan Data Pendidikan Tinggi)
+- [PISN  pisn.kemdiktisaintek.go.id](https://pisn.kemdiktisaintek.go.id/) (Penomoran Ijazah dan Sertifikat Profesi Nasional)
 
 ### Ringkasan Perbandingan
 
@@ -296,20 +296,20 @@ Analisa berdasarkan situs resmi/portal yang dikunjungi:
 |---|---|---|---|
 | **Fungsi utama** | Verifikasi nomor ijazah | Database & statistik pendidikan tinggi (4.416 PT, 9,9 jt mahasiswa) | Penomoran + verifikasi nomor ijazah / sertifikat profesi |
 | **Cara verifikasi** | Form manual: PT, Prodi, Nomor Ijazah, angka pengaman/captcha | Bukan portal verifikasi ijazah; data berasal dari pelaporan PT | Form manual: PT, Program Pendidikan, Prodi, Tipe Pencarian (Nomor Ijazah / NIM / Nomor Sertifikat), captcha |
-| **Bukti kriptografi** | âŒ Tidak ada â€” hanya cek keberadaan nomor di database pusat | âŒ Tidak ada hash dokumen | âŒ Tidak ada hash dokumen; nomor di-generate lalu dikirim ke PDDikti |
-| **Verifikasi saat server pusat down** | âŒ Gagal / tidak dapat diakses | âŒ Tergantung server pusat | âŒ Gagal; ada pengumuman maintenance (mis. pengalihan Metro-E, Oct 2026) |
-| **QR / scan / wallet** | âŒ | âŒ | âŒ |
-| **API publik untuk HRD** | âŒ (API resmi bersifat institusional, perlu pengajuan) | âŒ | âŒ |
+| **Bukti kriptografi** |  Tidak ada  hanya cek keberadaan nomor di database pusat |  Tidak ada hash dokumen |  Tidak ada hash dokumen; nomor di-generate lalu dikirim ke PDDikti |
+| **Verifikasi saat server pusat down** |  Gagal / tidak dapat diakses |  Tergantung server pusat |  Gagal; ada pengumuman maintenance (mis. pengalihan Metro-E, Oct 2026) |
+| **QR / scan / wallet** |  |  |  |
+| **API publik untuk HRD** |  (API resmi bersifat institusional, perlu pengajuan) |  |  |
 
 ### Kekurangan Utama di Ketiga Sistem
 
 1. **Single point of failure (server pusat)**
    - Semua verifikasi bergantung pada server Kemdiktisaintek. Saat maintenance/down, HRD & alumni tidak bisa verifikasi sama sekali.
-   - Sinkronisasi PDDikti â†’ SIVIL/PISN ada jeda (dilaporkan hingga 2Ã—24 jam / H+3), sehingga ijazah asli bisa tampil "tidak ditemukan".
+   - Sinkronisasi PDDikti  SIVIL/PISN ada jeda (dilaporkan hingga 224 jam / H+3), sehingga ijazah asli bisa tampil "tidak ditemukan".
 
 2. **Form manual + captcha, rawan typo**
    - Verifikator wajib mengetik PT, Prodi, Nomor Ijazah/NIM, dan angka pengaman secara persis, termasuk tanda khusus.
-   - Nomor ijazah sering tidak tampak di lembar depan, nama/NIM bisa typo â†’ hasil "tidak ditemukan" padahal ijazah asli.
+   - Nomor ijazah sering tidak tampak di lembar depan, nama/NIM bisa typo  hasil "tidak ditemukan" padahal ijazah asli.
    - Tidak ada scan QR, Token ID, atau wallet address.
 
 3. **Tidak ada bukti kriptografi atas dokumen**
@@ -318,7 +318,7 @@ Analisa berdasarkan situs resmi/portal yang dikunjungi:
 
 4. **Kualitas data tergantung pelaporan operator PT**
    - Jika operator belum finalisasi pelaporan, salah input nomor, SKS/IPK/NIK salah, atau status belum "Lulus", ijazah asli tidak terdeteksi.
-   - PISN menerapkan validator ketat (Prodi terakreditasi, masa studi, minimal SKS & IPK, SKS semester antara, mahasiswa aktif di periode tahun masuk, NIK/passport terisi). Data tidak eligible harus diperbaiki di PDDikti atau mengajukan **eksepsi** dengan SPTJM, SK Yudisium/BA Sidang, surat permohonan pimpinan PT, dll. â€” birokratis & lambat.
+   - PISN menerapkan validator ketat (Prodi terakreditasi, masa studi, minimal SKS & IPK, SKS semester antara, mahasiswa aktif di periode tahun masuk, NIK/passport terisi). Data tidak eligible harus diperbaiki di PDDikti atau mengajukan **eksepsi** dengan SPTJM, SK Yudisium/BA Sidang, surat permohonan pimpinan PT, dll.  birokratis & lambat.
 
 5. **Cakupan terbatas**
    - Berlaku dari periode awal pelaporan: PT umum mulai TA 2003/2004, PT keagamaan 2009/2010, PT kementerian lain 2012/2013 (SE No. 5478/A.P1/SE/2017).
@@ -329,8 +329,8 @@ Analisa berdasarkan situs resmi/portal yang dikunjungi:
    - Perubahan data di database pusat tidak meninggalkan jejak kriptografi yang dapat diaudit publik.
 
 7. **Risiko kepercayaan domain & transisi layanan**
-   - SIVIL dikenal lewat domain non-`go.id` (`ijazahkemdikbud.web.id`) â€” rawan kebingungan/phishing dibanding domain resmi `*.kemdiktisaintek.go.id`.
-   - Layanan SIVIL dilaporkan sudah jarang aktif / tidak tersambung ke data, dan verifikasi dialihkan ke PISN â€” membingungkan pengguna lama.
+   - SIVIL dikenal lewat domain non-`go.id` (`ijazahkemdikbud.web.id`)  rawan kebingungan/phishing dibanding domain resmi `*.kemdiktisaintek.go.id`.
+   - Layanan SIVIL dilaporkan sudah jarang aktif / tidak tersambung ke data, dan verifikasi dialihkan ke PISN  membingungkan pengguna lama.
 
 ### Bagaimana AcademixSBT Menjawabnya
 
@@ -348,37 +348,37 @@ Analisa berdasarkan situs resmi/portal yang dikunjungi:
 
 ---
 
-## ðŸ—‚ï¸ Project Structure
+##  Project Structure
 
-> **Target layout (monorepo)** â€” sesuaikan dengan pilihan stack yang dipakai (Backend: Go/Gin atau Node.js/Express; Frontend: Next.js atau Vue.js).
+> **Target layout (monorepo)**  sesuaikan dengan pilihan stack yang dipakai (Backend: Go/Gin atau Node.js/Express; Frontend: Next.js atau Vue.js).
 
 ```text
 academix-sbt/
-â”œâ”€â”€ contracts/                  # Smart Contract (Hardhat / Foundry)
-â”‚   â”œâ”€â”€ contracts/
-â”‚   â”‚   â””â”€â”€ DiplomaSBT.sol      # ERC-5192 Soulbound Token
-â”‚   â”œâ”€â”€ scripts/
-â”‚   â”‚   â””â”€â”€ deploy.ts           # Script deploy ke testnet
-â”‚   â”œâ”€â”€ test/
-â”‚   â””â”€â”€ hardhat.config.ts
-â”‚
-â”œâ”€â”€ backend/                    # Backend API (Go / Node.js TypeScript)
-â”‚   â”œâ”€â”€ src/                    # routes, controllers, services
-â”‚   â”œâ”€â”€ migrations/             # Migrasi PostgreSQL
-â”‚   â””â”€â”€ .env.example
-â”‚
-â”œâ”€â”€ frontend/                   # Portal Kampus & Verifier (Next.js / Vue.js)
-â”‚   â”œâ”€â”€ app/                    # Pages (dashboard, verifikasi publik, dsb.)
-â”‚   â”œâ”€â”€ components/
-â”‚   â””â”€â”€ lib/                    # Web3 (wagmi / viem / ethers.js), API client
-â”‚
-â”œâ”€â”€ docs/                       # Dokumentasi tambahan (arsitektur, API, dsb.)
-â”œâ”€â”€ docker-compose.yml          # PostgreSQL & Local Hardhat Node
-â”œâ”€â”€ .env.example                # Template environment variables
-â”œâ”€â”€ TODO.md                     # Todo list & milestone
-â”œâ”€â”€ AGENTS.md                   # Instruksi agent: commit+push & continue otomatis
-â”œâ”€â”€ LICENSE                     # MIT License
-â””â”€â”€ README.md
+ contracts/                  # Smart Contract (Hardhat / Foundry)
+    contracts/
+       DiplomaSBT.sol      # ERC-5192 Soulbound Token
+    scripts/
+       deploy.ts           # Script deploy ke testnet
+    test/
+    hardhat.config.ts
+
+ backend/                    # Backend API (Go / Node.js TypeScript)
+    src/                    # routes, controllers, services
+    migrations/             # Migrasi PostgreSQL
+    .env.example
+
+ frontend/                   # Portal Kampus & Verifier (Next.js / Vue.js)
+    app/                    # Pages (dashboard, verifikasi publik, dsb.)
+    components/
+    lib/                    # Web3 (wagmi / viem / ethers.js), API client
+
+ docs/                       # Dokumentasi tambahan (arsitektur, API, dsb.)
+ docker-compose.yml          # PostgreSQL & Local Hardhat Node
+ .env.example                # Template environment variables
+ TODO.md                     # Todo list & milestone
+ AGENTS.md                   # Instruksi agent: commit+push & continue otomatis
+ LICENSE                     # MIT License
+ README.md
 ```
 
 | Folder | Isi |
@@ -391,7 +391,7 @@ academix-sbt/
 
 ---
 
-## ðŸ“ Roadmap / Todo List
+##  Roadmap / Todo List
 
 > Detail todo list dengan prioritas (P0/P1/P2) dan milestone dipisahkan di **[TODO.md](./TODO.md)**.
 
@@ -400,25 +400,25 @@ Ringkasan:
 - [x] Perancangan Spesifikasi SBT & Arsitektur Database Hybrid.
 - [x] Analisa gap SIVIL / PDDikti / PISN sebagai dasar kebutuhan fitur.
 - [x] Implementasi Smart Contract ERC-5192 `DiplomaSBT` + 15 test Hardhat lulus (lokal).
-- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia) â€” butuh `PRIVATE_KEY` + RPC berisi dana.
+- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia)  butuh `PRIVATE_KEY` + RPC berisi dana.
 - [x] Integrasi API Backend untuk Pengunggahan Metadata ke IPFS (Pinata / provider lokal) + hash SHA-256 PDF.
 - [x] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
-- [x] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah) â€” on-chain + tampil di portal.
-- [x] Minting end-to-end lokal tervalidasi (backend â†’ IPFS â†’ on-chain â†’ wallet alumni) â€” lihat [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
-- [x] Alur eksepsi terdokumentasi (SK Yudisium/BA Sidang + SPTJM + persetujuan pimpinan PT) â€” lihat [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
-- [ ] Todo turunan dari analisa SIVIL/PDDikti/PISN (QR/Token ID, hash SHA-256, validator ala PISN, API HRD, dll.) â€” lihat [TODO.md](./TODO.md).
+- [x] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah)  on-chain + tampil di portal.
+- [x] Minting end-to-end lokal tervalidasi (backend  IPFS  on-chain  wallet alumni)  lihat [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
+- [x] Alur eksepsi terdokumentasi (SK Yudisium/BA Sidang + SPTJM + persetujuan pimpinan PT)  lihat [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
+- [ ] Todo turunan dari analisa SIVIL/PDDikti/PISN (QR/Token ID, hash SHA-256, validator ala PISN, API HRD, dll.)  lihat [TODO.md](./TODO.md).
 
 ---
 
-## ðŸ“„ License
+##  License
 
-Proyek ini dilisensikan di bawah [MIT License](https://opensource.org/licenses/MIT) â€” sama dengan SPDX identifier pada smart contract (`// SPDX-License-Identifier: MIT`).
+Proyek ini dilisensikan di bawah [MIT License](https://opensource.org/licenses/MIT)  sama dengan SPDX identifier pada smart contract (`// SPDX-License-Identifier: MIT`).
 
 Lihat file [`LICENSE`](./LICENSE) untuk teks lisensi lengkap.
 
 ---
 
-## âš ï¸ Disclaimer
+##  Disclaimer
 
 > Project ini adalah **Proof of Concept** untuk tujuan edukasi dan riset. **Bukan untuk penggunaan production** tanpa audit keamanan smart contract, review arsitektur, dan penyesuaian terhadap regulasi yang berlaku (mis. PDDikti / kepatuhan data pribadi).
 

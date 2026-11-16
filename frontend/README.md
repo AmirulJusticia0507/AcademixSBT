@@ -1,4 +1,4 @@
-# Frontend — Portal Verifikasi Publik
+# Frontend  Portal Verifikasi Publik
 
 Portal **read-only** untuk memverifikasi ijazah SBT tanpa login wallet. Data diambil
 langsung dari kontrak via RPC publik + metadata IPFS, sehingga tetap berfungsi meski
@@ -42,15 +42,15 @@ tidak tampak valid berdasarkan data lama.
 
 | Fitur | Implementasi |
 |---|---|
-| Verifikasi tanpa login wallet | `lib/chain.ts` — ethers `JsonRpcProvider` read-only |
+| Verifikasi tanpa login wallet | `lib/chain.ts`  ethers `JsonRpcProvider` read-only |
 | Verifikasi via Token ID | Route `/verify/[tokenId]` |
 | Verifikasi via wallet | Route `/wallet/[address]` (ERC-721 Enumerable `tokenOfOwnerByIndex`) |
 | QR Code | `QrShare` menghasilkan QR berisi URL verifikasi; `ScanQrButton` memindai via kamera |
-| Kartu hasil | `DiplomaCard` — status valid/revoked, nama, NIM, prodi, gelar, institusi, tanggal minting, link IPFS |
-| Perbandingan hash PDF | `HashCompare` — SHA-256 dihitung di browser (`crypto.subtle`), berkas tidak diunggah |
+| Kartu hasil | `DiplomaCard`  status valid/revoked, nama, NIM, prodi, gelar, institusi, tanggal minting, link IPFS |
+| Perbandingan hash PDF | `HashCompare`  SHA-256 dihitung di browser (`crypto.subtle`), berkas tidak diunggah |
 | Metadata fallback | Beberapa gateway IPFS + proxy backend untuk CID lokal |
 
 ## Catatan privasi
 
 Portal tidak meminta koneksi wallet dan tidak menandatangani transaksi. Berkas PDF yang
-diunggah verifikator **tidak dikirim ke server** — hash dihitung lokal di browser.
+diunggah verifikator **tidak dikirim ke server**  hash dihitung lokal di browser.

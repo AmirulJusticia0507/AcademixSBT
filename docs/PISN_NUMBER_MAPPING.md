@@ -1,11 +1,11 @@
-# Mapping PIN Lama → Nomor Ijazah Nasional (NINa / PISN)
+# Mapping PIN Lama  Nomor Ijazah Nasional (NINa / PISN)
 
 Dokumen ini menjawab item riset: bagaimana `certificate_number` (PIN) dipetakan ke
 **Nomor Ijazah Nasional (NINa)** agar kompatibel dengan PDDikti/PISN.
 
 ## Format resmi
 
-### NINa — PISN (21 digit)
+### NINa  PISN (21 digit)
 
 ```text
 kode_pt (6) + kode_ps (5) + tahun_terbit (4) + tipe (1) + no_urut (5)
@@ -23,8 +23,8 @@ Contoh: `001021551012024100003`.
 
 Sumber:
 
-- FAQ PISN — <https://pisn.kemdiktisaintek.go.id/faq>
-- Kebijakan PISN LLDikti III (kodefikasi 21 digit) —
+- FAQ PISN  <https://pisn.kemdiktisaintek.go.id/faq>
+- Kebijakan PISN LLDikti III (kodefikasi 21 digit)
   <https://lldikti3.kemdiktisaintek.go.id/wp-content/uploads/2024/12/Paparan-Kebijakan-PISN.pdf>
 
 ### PIN lama (15 digit)
@@ -33,20 +33,20 @@ Sumber:
 kode_prodi (5) + tahun_lulus (4) + no_urut (5) + check_digit (1)
 ```
 
-Contoh: `79202 2017 00001 9` → `792022017000019`.
+Contoh: `79202 2017 00001 9`  `792022017000019`.
 
-Sumber: Panduan IPB / SE Dirjen Belmawa tentang PIN & SIVIL —
+Sumber: Panduan IPB / SE Dirjen Belmawa tentang PIN & SIVIL
 <https://panduan.ipb.ac.id/docs/tata-tertib-penyelenggaraan-akademik-multistrata/kelulusan-dan-gelar-akademik/>
 
 ## Aturan mapping yang dipakai
 
 `backend/src/lib/nationalDiplomaNumber.ts`:
 
-1. **NINa 21 digit valid** → dikembalikan apa adanya (`source: "nina"`).
-2. **PIN lama 15 digit** → `kode_prodi`, `tahun`, dan `no_urut` dipertahankan;
+1. **NINa 21 digit valid**  dikembalikan apa adanya (`source: "nina"`).
+2. **PIN lama 15 digit**  `kode_prodi`, `tahun`, dan `no_urut` dipertahankan;
    `kode_pt` ditambahkan dari data PDDikti; `check_digit` dibuang karena tidak
    dipakai NINa (`source: "legacy_pin"`).
-3. **Nomor internal institusi** (mis. `IJZ-2026-0001`) → ditolak; nomor internal
+3. **Nomor internal institusi** (mis. `IJZ-2026-0001`)  ditolak; nomor internal
    bukan PIN/NINa dan tidak boleh dianggap nomor nasional.
 
 > **Penting:** mapping ini hanya **preview/kompatibilitas**. NINa resmi hanya

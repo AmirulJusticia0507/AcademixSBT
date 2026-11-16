@@ -1,13 +1,13 @@
-# AGENTS.md — AcademixSBT
+# AGENTS.md - AcademixSBT
 
 > File ini adalah instruksi wajib untuk semua AI agent / contributor yang bekerja di repository ini.
-> Setiap task harus dijalankan secara **autonomous**: selesai satu task → langsung commit & push → lanjut task berikutnya **tanpa menunggu notifikasi / konfirmasi dari user**.
+> Setiap task harus dijalankan secara **autonomous**: selesai satu task -> langsung commit & push -> lanjut task berikutnya **tanpa menunggu notifikasi / konfirmasi dari user**.
 
 ---
 
 ## 1. Aturan Utama (Wajib)
 
-1. **Setiap task yang selesai WAJIB langsung `git commit` dan `git push`** — jangan berhenti hanya dengan mengubah file lokal.
+1. **Setiap task yang selesai WAJIB langsung `git commit` dan `git push`** - jangan berhenti hanya dengan mengubah file lokal.
 2. **Setelah push, langsung lanjutkan (`continue`) ke task berikutnya** tanpa menunggu perintah "lanjut" dari user.
 3. Jangan menanyakan "apakah saya lanjut / commit?" di tengah task yang sudah jelas. Lanjutkan sampai todo list selesai atau benar-benar diblokir (butuh kredensial, keputusan desain yang ambigu, atau perintah user yang bertentangan).
 4. Jika ada error yang bisa diperbaiki sendiri (build gagal, test gagal, lint, typo), perbaiki, ulangi, lalu commit & push lagi.
@@ -73,7 +73,7 @@ docs(todo): pisahkan todo list ke TODO.md
 
 - Bekerja di branch utama (`main`) kecuali user meminta branch/worktree tertentu.
 - Push ke remote yang sama (`origin`) setelah setiap commit sukses.
-- Jika push gagal karena remote berubah, lakukan `git pull --rebase` lalu `git push` lagi — jangan gunakan `--force` tanpa persetujuan eksplisit user.
+- Jika push gagal karena remote berubah, lakukan `git pull --rebase` lalu `git push` lagi - jangan gunakan `--force` tanpa persetujuan eksplisit user.
 - Jangan menghapus branch, rewrite history (`rebase -i`, `reset --hard`), atau menghapus file tanpa memastikan itu bagian dari task.
 
 ## 5. Kriteria "Task Selesai"
@@ -96,4 +96,4 @@ Berhenti dan laporkan **hanya** jika:
 - Ada keputusan desain yang benar-benar ambigu dan tidak dapat disimpulkan dari README/TODO.
 - Perintah user bertentangan langsung dengan aturan di file ini.
 
-Selain kondisi di atas, **jangan berhenti untuk bertanya — selesaikan dan lanjutkan.**
+Selain kondisi di atas, **jangan berhenti untuk bertanya - selesaikan dan lanjutkan.**

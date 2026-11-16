@@ -1,13 +1,13 @@
-﻿# ðŸ“ AcademixSBT â€” Todo List (English)
+#  AcademixSBT  Todo List (English)
 
-> ðŸŒ [Bahasa Indonesia](./TODO.md) | **English**
+>  [Bahasa Indonesia](./TODO.md) | **English**
 >
 > Priorities: **P0** = PoC core, **P1** = important for demo/testing, **P2** = nice-to-have/research.
-> Needs are based on the gap analysis of [SIVIL](https://www.ijazahkemdikbud.web.id/), [PDDikti](https://pddikti.kemdiktisaintek.go.id/), and [PISN](https://pisn.kemdiktisaintek.go.id/) â€” see the *Gap Analysis* section in [README.en.md](./README.en.md).
+> Needs are based on the gap analysis of [SIVIL](https://www.ijazahkemdikbud.web.id/), [PDDikti](https://pddikti.kemdiktisaintek.go.id/), and [PISN](https://pisn.kemdiktisaintek.go.id/)  see the *Gap Analysis* section in [README.en.md](./README.en.md).
 
 ---
 
-## âœ… Done
+##  Done
 
 - [x] SBT specification & hybrid database architecture
 - [x] Gap analysis of SIVIL / PDDikti / PISN
@@ -15,12 +15,12 @@
 
 ---
 
-## ðŸ”œ P0 â€” Core PoC
+##  P0  Core PoC
 
 ### Smart Contract
 
-- [x] ERC-5192 smart contract (`DiplomaSBT`) â€” implemented & local tests passing
-- [ ] Deploy contract to Testnet (Polygon Amoy / Arbitrum Sepolia) â€” needs `PRIVATE_KEY` + RPC
+- [x] ERC-5192 smart contract (`DiplomaSBT`)  implemented & local tests passing
+- [ ] Deploy contract to Testnet (Polygon Amoy / Arbitrum Sepolia)  needs `PRIVATE_KEY` + RPC
 - [x] `MINTER_ROLE` / `DEFAULT_ADMIN_ROLE` via OpenZeppelin `AccessControl`
 - [x] `safeMintSBT(address, tokenId, uri)` + `Locked(tokenId)` event
 - [x] `revokeDiploma(tokenId)` + `isRevoked` mapping + `Revoked(tokenId)` event
@@ -36,7 +36,7 @@
 - [x] Minting records saved to PostgreSQL (`diploma_tokens`)
 - [x] Audit log: who changed what, when
 
-### Frontend â€” Public Verification Portal
+### Frontend  Public Verification Portal
 
 - [x] Public verification portal without wallet login (read-only via RPC provider)
 - [x] Verification via QR Code (Token ID / verification URL) scannable by HR
@@ -46,7 +46,7 @@
 
 ---
 
-## ðŸŽ¯ P1 â€” Important (from SIVIL / PDDikti / PISN analysis)
+##  P1  Important (from SIVIL / PDDikti / PISN analysis)
 
 ### Zero-Downtime & Anti Single-Point-of-Failure
 
@@ -59,14 +59,14 @@
 - [x] Eligibility checklist before minting: accredited program, Graduated status, graduation date, study duration, minimum credits & GPA, NIK/passport
 - [x] Ineligible-data report with specific reasons
 - [x] Data correction flow in PostgreSQL + audit log
-- [x] (Optional) Documented exception flow: SK Yudisium/BA Sidang + SPTJM upload, leadership approval, audit log â€” see [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
+- [x] (Optional) Documented exception flow: SK Yudisium/BA Sidang + SPTJM upload, leadership approval, audit log  see [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
 
 ### Integration & Interoperability
 
 - [x] Official verification API for HR/institutions (API-key auth, rate limit, OpenAPI docs)
 - [x] Batch verification (many Token IDs via API)
 - [x] Verification proof export (timestamped JSON from on-chain queries)
-- [x] (Research) Map `certificate_number` (PIN) to the PISN national diploma number format (NINa) for PDDikti compatibility â€” see [docs/PISN_NUMBER_MAPPING.md](./docs/PISN_NUMBER_MAPPING.md).
+- [x] (Research) Map `certificate_number` (PIN) to the PISN national diploma number format (NINa) for PDDikti compatibility  see [docs/PISN_NUMBER_MAPPING.md](./docs/PISN_NUMBER_MAPPING.md).
 
 ### Privacy, Security & Compliance
 
@@ -77,7 +77,7 @@
 
 ---
 
-## ðŸŒ± P2 â€” Nice-to-Have / Research
+##  P2  Nice-to-Have / Research
 
 - [x] Special flow for legacy / foreign / closed-institution graduates (manual verification + `manual_verified` flag in metadata)
 - [x] Bulk CSV migration/import tool (format validation before mass minting)
@@ -87,22 +87,22 @@
 
 ---
 
-## ðŸ“Œ Milestones
+##  Milestones
 
 | Milestone | Contents | Status |
 |---|---|---|
-| **M1 â€” Contract live** | P0 smart contract deployed to testnet + tests passing | â¬œ |
-| **M2 â€” End-to-end minting** | Backend â†’ IPFS â†’ minting â†’ locked SBT in graduate wallet | âœ… |
-| **M3 â€” Public verification** | Read-only portal + QR/Token ID/Wallet, status & hash display | âœ… |
-| **M4 â€” Revocation & validator** | On-chain revoke visible in portal + PISN-style pre-mint validator | âœ… |
-| **M5 â€” HRD API** | API key + batch verification + proof export | âœ… |
+| **M1  Contract live** | P0 smart contract deployed to testnet + tests passing |  |
+| **M2  End-to-end minting** | Backend  IPFS  minting  locked SBT in graduate wallet |  |
+| **M3  Public verification** | Read-only portal + QR/Token ID/Wallet, status & hash display |  |
+| **M4  Revocation & validator** | On-chain revoke visible in portal + PISN-style pre-mint validator |  |
+| **M5  HRD API** | API key + batch verification + proof export |  |
 
 ---
 
-## ðŸ”— References
+##  References
 
 - SIVIL: https://www.ijazahkemdikbud.web.id/
 - PDDikti: https://pddikti.kemdiktisaintek.go.id/
-- PISN: https://pisn.kemdiktisaintek.go.id/ Â· FAQ: https://pisn.kemdiktisaintek.go.id/faq
+- PISN: https://pisn.kemdiktisaintek.go.id/  FAQ: https://pisn.kemdiktisaintek.go.id/faq
 - Architecture, DB schema, Solidity draft: [README.en.md](./README.en.md)
 

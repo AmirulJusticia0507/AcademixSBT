@@ -3,8 +3,8 @@
 Panduan menjalankan alur lengkap PoC di mesin lokal:
 
 ```text
-PDF ijazah → SHA-256 → metadata IPFS (lokal/pinata) → mint SBT
-          → PostgreSQL + audit log → verifikasi portal read-only
+PDF ijazah  SHA-256  metadata IPFS (lokal/pinata)  mint SBT
+           PostgreSQL + audit log  verifikasi portal read-only
 ```
 
 Hasil uji terakhir (16 Nov 2026):
@@ -139,8 +139,8 @@ npm run dev
 
 Buka:
 
-- `http://localhost:3000/verify/1` → kartu **IJAZAH VALID**, metadata, QR, hash compare.
-- `http://localhost:3000/wallet/0x7099...79C8` → daftar ijazah SBT milik wallet.
+- `http://localhost:3000/verify/1`  kartu **IJAZAH VALID**, metadata, QR, hash compare.
+- `http://localhost:3000/wallet/0x7099...79C8`  daftar ijazah SBT milik wallet.
 
 > CID `local-*` hanya untuk development. Untuk testnet, set `IPFS_PROVIDER=pinata`
 > dan isi `PINATA_JWT` agar metadata tersedia publik via gateway.

@@ -1,4 +1,4 @@
-# Contracts — AcademixSBT
+# Contracts  AcademixSBT
 
 Smart contract ijazah **Soulbound Token (ERC-5192 + ERC-721 Enumerable)** menggunakan
 OpenZeppelin `AccessControl`.

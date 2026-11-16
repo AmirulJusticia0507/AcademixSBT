@@ -15,7 +15,7 @@ Tanpa `SIAKAD_API_URL`, endpoint mengembalikan `503` (provider `disabled`).
 
 ```
 GET {SIAKAD_API_URL}/graduates?institution_code={kode}
-→ 200 { "graduates": [ { ... } ] }   atau   [ { ... } ]
+ 200 { "graduates": [ { ... } ] }   atau   [ { ... } ]
 ```
 
 ## Mapping field (alias yang diterima)

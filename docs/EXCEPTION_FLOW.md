@@ -1,16 +1,16 @@
 # Alur Eksepsi Terdokumentasi (P1)
 
 Validator ala PISN menolak ijazah yang gagal cek akreditasi / masa studi / pelaporan aktif.
-Untuk kasus yang sah (mis. prodi sedang reakreditasi), institusi dapat memakai **eksepsi** —
+Untuk kasus yang sah (mis. prodi sedang reakreditasi), institusi dapat memakai **eksepsi**
 tetapi hanya jika dokumen pendukung lengkap dan disetujui pimpinan PT.
 
 ```text
 Upload SK Yudisium/BA Sidang + SPTJM
-        → pemeriksaan kelengkapan
-        → persetujuan pimpinan PT
-        → audit log
-        → minting dengan exceptionApproved=true
-        → dokumen ditautkan ke Token ID
+         pemeriksaan kelengkapan
+         persetujuan pimpinan PT
+         audit log
+         minting dengan exceptionApproved=true
+         dokumen ditautkan ke Token ID
 ```
 
 ## Dokumen yang wajib

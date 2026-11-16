@@ -1,7 +1,7 @@
-# Backend — AcademixSBT
+# Backend  AcademixSBT
 
-REST API untuk alur **mint ijazah → hash SHA-256 → upload metadata IPFS → mint SBT →
-simpan record PostgreSQL → audit log**, plus endpoint verifikasi publik read-only.
+REST API untuk alur **mint ijazah  hash SHA-256  upload metadata IPFS  mint SBT
+simpan record PostgreSQL  audit log**, plus endpoint verifikasi publik read-only.
 
 ## Menjalankan
 
@@ -34,17 +34,17 @@ mengembalikan `503` (berguna untuk cek UI/health).
 
 | Method | Path | Auth | Keterangan |
 |---|---|---|---|
-| GET | `/api/health` | – | Status DB + koneksi blockchain |
-| GET | `/api/config` | – | `chainId`, `contractAddress`, gateway IPFS |
-| POST | `/api/diplomas` | `x-api-key` | Multipart: field ijazah + `document` (PDF ≤ 10 MB) |
+| GET | `/api/health` |  | Status DB + koneksi blockchain |
+| GET | `/api/config` |  | `chainId`, `contractAddress`, gateway IPFS |
+| POST | `/api/diplomas` | `x-api-key` | Multipart: field ijazah + `document` (PDF  10 MB) |
 | POST | `/api/diplomas/:tokenId/revoke` | `x-api-key` | Revoke ijazah on-chain + DB |
 | GET | `/api/diplomas/:tokenId` | `x-api-key` | Record internal (DB) |
-| GET | `/api/verify/:tokenId` | – | Verifikasi publik: on-chain + metadata IPFS |
-| GET | `/api/verify/wallet/:address` | – | Semua token milik wallet (ERC-721 Enumerable) |
-| POST | `/api/verify/:tokenId/document` | – | Upload PDF, bandingkan SHA-256 |
-| GET | `/api/ipfs/:cid` | – | Proxy metadata (provider lokal/Pinata) |
+| GET | `/api/verify/:tokenId` |  | Verifikasi publik: on-chain + metadata IPFS |
+| GET | `/api/verify/wallet/:address` |  | Semua token milik wallet (ERC-721 Enumerable) |
+| POST | `/api/verify/:tokenId/document` |  | Upload PDF, bandingkan SHA-256 |
+| GET | `/api/ipfs/:cid` |  | Proxy metadata (provider lokal/Pinata) |
 | POST | `/api/issuers` | `x-api-key` | Daftarkan wallet institusi on-chain |
-| GET | `/api/issuers/:address` | – | Cek status issuer |
+| GET | `/api/issuers/:address` |  | Cek status issuer |
 | GET | `/api/audit-logs` | `x-api-key` | Audit log terbaru |
 | POST | `/api/exceptions/:certificateNumber/documents` | `x-api-key` | Upload SK Yudisium/BA Sidang/SPTJM (alur eksepsi) |
 | GET | `/api/exceptions/:certificateNumber` | `x-api-key` | Status kelengkapan & persetujuan eksepsi |
@@ -76,7 +76,7 @@ Metadata yang di-upload ke IPFS:
 
 ```json
 {
-  "name": "Ijazah S.Kom — Budi Santoso",
+  "name": "Ijazah S.Kom  Budi Santoso",
   "attributes": [{ "trait_type": "NIM", "value": "20210001" }],
   "diploma": {
     "certificate_number": "IJZ-2026-001",
@@ -94,14 +94,14 @@ Metadata yang di-upload ke IPFS:
 
 ```text
 backend/
-├── migrations/001_init.sql       # institutions, graduates, diploma_tokens, audit_logs
-├── migrations/004_add_exception_documents.sql  # alur eksepsi (SK/BA + SPTJM)
-├── src/
-│   ├── app.ts                    # routes Express
-│   ├── services/                 # blockchain, IPFS, minting, verification, exception
-│   ├── repositories/             # query PostgreSQL + audit log
-│   └── lib/                      # hash SHA-256, metadata, validasi zod, ABI
-└── test/                         # unit + HTTP (supertest) + integrasi PostgreSQL
+ migrations/001_init.sql       # institutions, graduates, diploma_tokens, audit_logs
+ migrations/004_add_exception_documents.sql  # alur eksepsi (SK/BA + SPTJM)
+ src/
+    app.ts                    # routes Express
+    services/                 # blockchain, IPFS, minting, verification, exception
+    repositories/             # query PostgreSQL + audit log
+    lib/                      # hash SHA-256, metadata, validasi zod, ABI
+ test/                         # unit + HTTP (supertest) + integrasi PostgreSQL
 ```
 
 ## Test

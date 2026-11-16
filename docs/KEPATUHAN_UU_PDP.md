@@ -1,4 +1,4 @@
-# Kepatuhan — AcademixSBT (P1)
+# Kepatuhan  AcademixSBT (P1)
 
 > Dokumen ini adalah kajian awal untuk PoC, **bukan nasihat hukum**. Konsultasikan dengan penasihat hukum / DPO sebelum production.
 
@@ -11,13 +11,13 @@
 
 2. **UU PDP (UU No. 27 Tahun 2022)**
    - Data alumni adalah data pribadi. Tentukan dasar pemrosesan (persetujuan / kewajiban hukum penomoran ijazah nasional), tujuan, dan masa retensi.
-   - Sediakan mekanisme akses, koreksi, dan penghapusan data sensitif di DB (on-chain hash tidak dapat dihapus — jelaskan ini ke alumni saat minting).
+   - Sediakan mekanisme akses, koreksi, dan penghapusan data sensitif di DB (on-chain hash tidak dapat dihapus  jelaskan ini ke alumni saat minting).
    - Catat `audit_logs`: siapa mengakses/mengubah data, kapan, untuk tujuan apa.
    - Penilaian dampak (DPIA) sebelum menyimpan data dalam skala besar.
 
 3. **Regulasi pendidikan**
    - Penomoran ijazah nasional: Permendikbudristek No. 6 Tahun 2022; validator PISN (akreditasi, masa studi, SKS, IPK, NIK) diimplementasikan sebagai *pre-mint validator* (`backend/src/services/eligibility.ts`).
-   - AcademixSBT **bukan pengganti** PDDikti/PISN — mapping `certificate_number` ke format PIN nasional masih riset (lihat TODO P1).
+   - AcademixSBT **bukan pengganti** PDDikti/PISN  mapping `certificate_number` ke format PIN nasional masih riset (lihat TODO P1).
 
 4. **Keamanan akses (RBAC)**
    | Role | Akses |
