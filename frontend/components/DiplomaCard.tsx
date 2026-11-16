@@ -1,10 +1,13 @@
-import { config, explorerAddress } from "@/lib/config";
 import { formatDate } from "@/lib/format";
 import { ipfsHttpUrl } from "@/lib/ipfs";
 import type { VerifiedDiploma } from "@/lib/types";
 import { HashCompare } from "./HashCompare";
 import { QrShare } from "./QrShare";
 import { StatusBadge } from "./StatusBadge";
+
+function explorerAddress(base: string, address: string): string {
+  return `${base.replace(/\/+$/, "")}/address/${address}`;
+}
 
 function DataRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -26,7 +29,7 @@ export function DiplomaCard({ diploma }: { diploma: VerifiedDiploma }) {
       <article className={`diploma-card border-${status}`}>
         <header className="diploma-head">
           <div>
-            <p className="eyebrow">Soulbound Token · ERC-5192</p>
+            <p className="eyebrow">Soulbound Token · ERC-5192 · {diploma.chain.name}</p>
             <h1>{fullName}</h1>
             <p className="muted">
               Token ID <strong>#{diploma.tokenId}</strong> · {payload?.institution_name || "Institusi tidak diketahui"}
@@ -62,10 +65,11 @@ export function DiplomaCard({ diploma }: { diploma: VerifiedDiploma }) {
           <aside className="onchain-panel">
             <p className="eyebrow">Bukti on-chain</p>
             <dl className="data-stack">
+              <DataRow label="Jaringan" value={`${diploma.chain.name} (chainId ${diploma.chain.chainId})`} />
               <DataRow
                 label="Pemilik wallet"
                 value={
-                  <a href={explorerAddress(diploma.owner)} target="_blank" rel="noreferrer">
+                  <a href={explorerAddress(diploma.chain.explorerUrl, diploma.owner)} target="_blank" rel="noreferrer">
                     <code>{diploma.owner}</code>
                   </a>
                 }
@@ -74,7 +78,7 @@ export function DiplomaCard({ diploma }: { diploma: VerifiedDiploma }) {
                 label="Institusi penerbit"
                 value={
                   diploma.issuer ? (
-                    <a href={explorerAddress(diploma.issuer)} target="_blank" rel="noreferrer">
+                    <a href={explorerAddress(diploma.chain.explorerUrl, diploma.issuer)} target="_blank" rel="noreferrer">
                       <code>{diploma.issuer}</code>
                     </a>
                   ) : (
@@ -95,11 +99,11 @@ export function DiplomaCard({ diploma }: { diploma: VerifiedDiploma }) {
                 label="Kontrak"
                 value={
                   <a
-                    href={explorerAddress(config.contractAddress)}
+                    href={explorerAddress(diploma.chain.explorerUrl, diploma.chain.contractAddress)}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <code>{config.contractAddress}</code>
+                    <code>{diploma.chain.contractAddress}</code>
                   </a>
                 }
               />

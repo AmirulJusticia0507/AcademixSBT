@@ -21,7 +21,16 @@ export interface DiplomaMetadata {
   diploma: DiplomaPayload;
 }
 
+export interface ChainInfo {
+  id: string;
+  name: string;
+  chainId: number;
+  explorerUrl: string;
+  contractAddress: string;
+}
+
 export interface OnChainDiploma {
+  chain: ChainInfo;
   tokenId: string;
   owner: string;
   issuer: string;

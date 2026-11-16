@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
-import { ChainNotConfiguredError, InvalidInputError } from "@/lib/chain";
+import { InvalidInputError } from "@/lib/chain";
 import { formatDate, shortAddress } from "@/lib/format";
-import { verifyWallet } from "@/lib/verification";
+import { verifyWalletMulti } from "@/lib/verification";
 import type { VerifiedDiploma } from "@/lib/types";
 
 type State =
   | { status: "loading" }
-  | { status: "ok"; tokens: VerifiedDiploma[] }
+  | { status: "ok"; tokens: VerifiedDiploma[]; errors: Array<{ chain: string; message: string }> }
   | { status: "error"; message: string; hint?: string };
 
 export default function WalletPage() {
@@ -23,20 +23,16 @@ export default function WalletPage() {
     let active = true;
     setState({ status: "loading" });
 
-    verifyWallet(address)
-      .then((tokens) => {
-        if (active) setState({ status: "ok", tokens });
+    verifyWalletMulti(address)
+      .then((result) => {
+        if (active) setState({
+          status: "ok",
+          tokens: result.tokens,
+          errors: result.results.flatMap((item) => item.error ? [{ chain: item.chain.name, message: item.error }] : []),
+        });
       })
       .catch((error: unknown) => {
         if (!active) return;
-        if (error instanceof ChainNotConfiguredError) {
-          setState({
-            status: "error",
-            message: error.message,
-            hint: "Set NEXT_PUBLIC_CONTRACT_ADDRESS di frontend/.env lalu rebuild.",
-          });
-          return;
-        }
         if (error instanceof InvalidInputError) {
           setState({ status: "error", message: error.message });
           return;
@@ -58,7 +54,7 @@ export default function WalletPage() {
       <div className="container">
         <div className="page-head">
           <div>
-            <p className="eyebrow">Verifikasi via wallet</p>
+            <p className="eyebrow">Verifikasi via wallet · Multichain</p>
             <h1>Ijazah SBT milik wallet</h1>
             <p className="muted small">
               <code>{address}</code>
@@ -72,7 +68,7 @@ export default function WalletPage() {
         {state.status === "loading" && (
           <div className="loading-state">
             <span className="spinner" aria-hidden="true" />
-            <p>Membaca token milik wallet…</p>
+            <p>Membaca token milik wallet di setiap chain…</p>
           </div>
         )}
 
@@ -98,6 +94,7 @@ export default function WalletPage() {
 
         {state.status === "ok" && state.tokens.length > 0 && (
           <>
+            {state.errors.length > 0 && <p className="alert alert-warning">Sebagian chain gagal dibaca: {state.errors.map((item) => `${item.chain}: ${item.message}`).join("; ")}</p>}
             <p className="muted small" style={{ marginBottom: "0.8rem" }}>
               {state.tokens.length} ijazah ditemukan.
             </p>
@@ -106,12 +103,12 @@ export default function WalletPage() {
                 const status = token.revoked ? "revoked" : token.locked ? "valid" : "invalid";
                 const payload = token.metadata?.diploma;
                 return (
-                  <Link key={token.tokenId} href={`/verify/${token.tokenId}`} className="wallet-item">
+                  <Link key={`${token.chain.id}-${token.tokenId}`} href={`/verify/${token.tokenId}`} className="wallet-item">
                     <div>
                       <h3>{payload?.full_name || token.metadata?.name || `Token #${token.tokenId}`}</h3>
                       <p className="meta">
                         {payload?.study_program || "Program studi —"} ·{" "}
-                        {payload?.institution_name || "Institusi —"} · Token #{token.tokenId}
+                        {payload?.institution_name || "Institusi —"} · {token.chain.name} · Token #{token.tokenId}
                       </p>
                       <p className="meta">Minting: {formatDate(token.mintedAt)}</p>
                     </div>

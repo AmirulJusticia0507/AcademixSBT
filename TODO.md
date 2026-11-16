@@ -1,27 +1,27 @@
-# 📝 AcademixSBT — Todo List
+﻿# ðŸ“ AcademixSBT â€” Todo List
 
-> 🌐 **Bahasa Indonesia** | [English](./TODO.en.md)
+> ðŸŒ **Bahasa Indonesia** | [English](./TODO.en.md)
 >
 > Todo list terpisah dari [README.md](./readme.md). Prioritas: **P0** = inti PoC, **P1** = penting untuk demo/uji, **P2** = nice-to-have / riset.
-> Dasar kebutuhan: analisa gap [SIVIL](https://www.ijazahkemdikbud.web.id/), [PDDikti](https://pddikti.kemdiktisaintek.go.id/), dan [PISN](https://pisn.kemdiktisaintek.go.id/) — lihat section *Analisa Kekurangan Sistem Eksisting* di README.
+> Dasar kebutuhan: analisa gap [SIVIL](https://www.ijazahkemdikbud.web.id/), [PDDikti](https://pddikti.kemdiktisaintek.go.id/), dan [PISN](https://pisn.kemdiktisaintek.go.id/) â€” lihat section *Analisa Kekurangan Sistem Eksisting* di README.
 
 ---
 
-## ✅ Selesai
+## âœ… Selesai
 
 - [x] Perancangan Spesifikasi SBT & Arsitektur Database Hybrid.
 - [x] Analisa gap SIVIL / PDDikti / PISN sebagai dasar kebutuhan fitur.
 - [x] README dirapikan (struktur, tabel, code block) + file `LICENSE` (MIT).
-- [x] Minting end-to-end lokal tervalidasi (Hardhat node + backend + IPFS lokal + portal) — bukti di [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
+- [x] Minting end-to-end lokal tervalidasi (Hardhat node + backend + IPFS lokal + portal) â€” bukti di [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
 
 ---
 
-## 🔜 P0 — Core PoC
+## ðŸ”œ P0 â€” Core PoC
 
 ### Smart Contract
 
-- [x] Implementasi Smart Contract ERC-5192 (`DiplomaSBT`) — selesai & lulus test lokal.
-- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia) — butuh `PRIVATE_KEY` + RPC.
+- [x] Implementasi Smart Contract ERC-5192 (`DiplomaSBT`) â€” selesai & lulus test lokal.
+- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia) â€” butuh `PRIVATE_KEY` + RPC.
 - [x] Role `MINTER_ROLE` / `DEFAULT_ADMIN_ROLE` via OpenZeppelin `AccessControl`.
 - [x] `safeMintSBT(address, tokenId, uri)` + event `Locked(tokenId)`.
 - [x] `revokeDiploma(tokenId)` + mapping `isRevoked` + event `Revoked(tokenId)`.
@@ -37,7 +37,7 @@
 - [x] Simpan record minting ke PostgreSQL (`diploma_tokens`: `token_id`, `ipfs_cid`, `tx_hash`, `certificate_number`, `is_revoked`, `minted_at`).
 - [x] Audit log: siapa memasukkan/mengubah data apa, kapan.
 
-### Frontend — Portal Verifikasi Publik
+### Frontend â€” Portal Verifikasi Publik
 
 - [x] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
 - [x] Verifikasi via QR Code (berisi Token ID / URL verifikasi) yang dapat dipindai HRD.
@@ -47,7 +47,7 @@
 
 ---
 
-## 🎯 P1 — Penting (dari analisa SIVIL / PDDikti / PISN)
+## ðŸŽ¯ P1 â€” Penting (dari analisa SIVIL / PDDikti / PISN)
 
 ### Zero-Downtime & Anti Single-Point-of-Failure
 
@@ -60,14 +60,14 @@
 - [x] Checklist eligible sebelum minting: Prodi terakreditasi, status Lulus, tanggal yudisium terisi, masa studi, minimal SKS & IPK, NIK/passport terisi.
 - [x] Laporan data tidak eligible + alasan spesifik (bukan sekadar "tidak ditemukan").
 - [x] Alur koreksi data di PostgreSQL + audit log.
-- [x] (Opsional) Alur eksepsi terdokumentasi: upload SK Yudisium/BA Sidang + SPTJM, persetujuan pimpinan PT, tercatat di audit log — lihat [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
+- [x] (Opsional) Alur eksepsi terdokumentasi: upload SK Yudisium/BA Sidang + SPTJM, persetujuan pimpinan PT, tercatat di audit log â€” lihat [docs/EXCEPTION_FLOW.md](./docs/EXCEPTION_FLOW.md).
 
 ### Integrasi & Interoperabilitas
 
 - [x] API verifikasi resmi untuk HRD/instansi (auth via API key, rate-limit, dokumentasi OpenAPI).
 - [x] Batch verification (verifikasi banyak Token ID sekaligus via CSV/API).
 - [x] Ekspor bukti verifikasi (PDF/JSON bertanda waktu dari hasil query on-chain).
-- [x] (Riset) Mapping kolom `certificate_number` (PIN) ke format Nomor Ijazah Nasional PISN agar kompatibel dengan PDDikti — lihat [docs/PISN_NUMBER_MAPPING.md](./docs/PISN_NUMBER_MAPPING.md).
+- [x] (Riset) Mapping kolom `certificate_number` (PIN) ke format Nomor Ijazah Nasional PISN agar kompatibel dengan PDDikti â€” lihat [docs/PISN_NUMBER_MAPPING.md](./docs/PISN_NUMBER_MAPPING.md).
 
 ### Privasi, Keamanan & Kepatuhan
 
@@ -78,31 +78,34 @@
 
 ---
 
-## 🌱 P2 — Nice-to-Have / Riset
+## ðŸŒ± P2 â€” Nice-to-Have / Riset
 
 - [x] Alur khusus lulusan lama / ijazah luar negeri / PT tutup (verval manual + tanda `manual_verified` di metadata).
 - [x] Tool migrasi/input massal dari data CSV kampus (validasi format sebelum minting massal).
 - [x] Integrasi SIAKAD kampus (sumber data kelulusan) untuk mengurangi input manual operator.
 - [x] Dukungan multi-chain / multi-institusi dengan registry issuer on-chain.
+- [x] Dashboard portfolio multichain Arbitrum + Polygon via Alchemy API.
+- [x] Portal verifikasi ijazah multichain Arbitrum + Polygon (kontrak perlu dikonfigurasi per chain).
 - [x] Versi English dari README & TODO (`README.en.md`).
 
 ---
 
-## 📌 Milestone yang Diusulkan
+## ðŸ“Œ Milestone yang Diusulkan
 
 | Milestone | Isi | Status |
 |---|---|---|
-| **M1 — Kontrak jalan** | P0 Smart Contract ter-deploy di testnet + test lulus | ⬜ |
-| **M2 — Minting end-to-end** | Backend → IPFS → minting → SBT terkunci di wallet alumni | ✅ |
-| **M3 — Verifikasi publik** | Portal read-only + QR/Token ID/Wallet, tampilkan status & hash | ✅ |
-| **M4 — Revocation & validator** | Revoke on-chain terlihat di portal + pre-mint validator ala PISN | ✅ |
-| **M5 — API untuk HRD** | API key + batch verification + ekspor bukti | ✅ |
+| **M1 â€” Kontrak jalan** | P0 Smart Contract ter-deploy di testnet + test lulus | â¬œ |
+| **M2 â€” Minting end-to-end** | Backend â†’ IPFS â†’ minting â†’ SBT terkunci di wallet alumni | âœ… |
+| **M3 â€” Verifikasi publik** | Portal read-only + QR/Token ID/Wallet, tampilkan status & hash | âœ… |
+| **M4 â€” Revocation & validator** | Revoke on-chain terlihat di portal + pre-mint validator ala PISN | âœ… |
+| **M5 â€” API untuk HRD** | API key + batch verification + ekspor bukti | âœ… |
 
 ---
 
-## 🔗 Referensi
+## ðŸ”— Referensi
 
 - SIVIL: https://www.ijazahkemdikbud.web.id/
 - PDDikti: https://pddikti.kemdiktisaintek.go.id/
-- PISN: https://pisn.kemdiktisaintek.go.id/ · FAQ: https://pisn.kemdiktisaintek.go.id/faq
+- PISN: https://pisn.kemdiktisaintek.go.id/ Â· FAQ: https://pisn.kemdiktisaintek.go.id/faq
 - README (arsitektur, schema DB, draft Solidity): [readme.md](./readme.md)
+

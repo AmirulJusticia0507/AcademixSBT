@@ -1,20 +1,24 @@
 import { Contract, JsonRpcProvider, getAddress } from "ethers";
 import { DIPLOMA_SBT_ABI } from "./abi";
-import { config, isContractConfigured } from "./config";
-import type { OnChainDiploma } from "./types";
+import type { ChainConfig } from "./chains";
+import type { ChainInfo, OnChainDiploma } from "./types";
 
 export class ChainNotConfiguredError extends Error {
   constructor() {
     super(
-      "Alamat kontrak belum dikonfigurasi. Set NEXT_PUBLIC_CONTRACT_ADDRESS lalu rebuild portal.",
+      "Belum ada chain/kontrak yang dikonfigurasi. Set NEXT_PUBLIC_ARB_CONTRACT_ADDRESS dan/atau NEXT_PUBLIC_POLYGON_CONTRACT_ADDRESS (atau NEXT_PUBLIC_CONTRACT_ADDRESS) lalu rebuild portal.",
     );
     this.name = "ChainNotConfiguredError";
   }
 }
 
 export class TokenNotFoundError extends Error {
-  constructor(tokenId: string) {
-    super(`Token ID ${tokenId} tidak ditemukan di blockchain.`);
+  constructor(tokenId: string, chainName?: string) {
+    super(
+      chainName
+        ? `Token ID ${tokenId} tidak ditemukan di ${chainName}.`
+        : `Token ID ${tokenId} tidak ditemukan di blockchain.`,
+    );
     this.name = "TokenNotFoundError";
   }
 }
@@ -26,37 +30,41 @@ export class InvalidInputError extends Error {
   }
 }
 
-let provider: JsonRpcProvider | null = null;
-let contract: Contract | null = null;
+const providers = new Map<string, JsonRpcProvider>();
+const contracts = new Map<string, Contract>();
 
-function getContract(): Contract {
-  if (!isContractConfigured) {
+function getContract(chain: ChainConfig): Contract {
+  if (!/^0x[a-fA-F0-9]{40}$/.test(chain.contractAddress)) {
     throw new ChainNotConfiguredError();
   }
-  if (!provider) {
-    provider = new JsonRpcProvider(config.rpcUrl, config.chainId);
+  if (!providers.has(chain.id)) {
+    providers.set(chain.id, new JsonRpcProvider(chain.rpcUrl, chain.chainId));
   }
-  if (!contract) {
-    contract = new Contract(config.contractAddress, DIPLOMA_SBT_ABI, provider);
+  if (!contracts.has(chain.id)) {
+    contracts.set(chain.id, new Contract(chain.contractAddress, DIPLOMA_SBT_ABI, providers.get(chain.id)!));
   }
-  return contract;
+  return contracts.get(chain.id)!;
 }
 
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-export async function readOnChain(tokenId: string): Promise<OnChainDiploma> {
+function toChainInfo(chain: ChainConfig): ChainInfo {
+  return { id: chain.id, name: chain.name, chainId: chain.chainId, explorerUrl: chain.explorerUrl, contractAddress: chain.contractAddress };
+}
+
+export async function readOnChain(tokenId: string, chain: ChainConfig): Promise<OnChainDiploma> {
   if (!/^\d+$/.test(tokenId) || BigInt(tokenId) <= 0n) {
     throw new InvalidInputError("Token ID harus berupa angka bulat positif.");
   }
 
-  const instance = getContract();
+  const instance = getContract(chain);
   const id = BigInt(tokenId);
 
   let owner: string;
   try {
     owner = await instance.ownerOf(id);
   } catch {
-    throw new TokenNotFoundError(tokenId);
+    throw new TokenNotFoundError(tokenId, chain.name);
   }
 
   const [issuer, tokenUri, locked, revoked, mintedAtRaw] = await Promise.all([
@@ -68,6 +76,7 @@ export async function readOnChain(tokenId: string): Promise<OnChainDiploma> {
   ]);
 
   return {
+    chain: toChainInfo(chain),
     tokenId: id.toString(),
     owner: getAddress(owner),
     issuer: issuer && issuer !== ZERO_ADDRESS ? getAddress(issuer) : "",
@@ -81,23 +90,27 @@ export async function readOnChain(tokenId: string): Promise<OnChainDiploma> {
   };
 }
 
-export async function readWallet(address: string): Promise<OnChainDiploma[]> {
+export async function readWallet(address: string, chain: ChainConfig): Promise<OnChainDiploma[]> {
   if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
     throw new InvalidInputError("Alamat wallet tidak valid.");
   }
 
-  const instance = getContract();
+  const instance = getContract(chain);
   const balance = (await instance.balanceOf(address)) as bigint;
 
   const tokens: OnChainDiploma[] = [];
   for (let i = 0n; i < balance; i += 1n) {
     const tokenId = (await instance.tokenOfOwnerByIndex(address, i)) as bigint;
-    tokens.push(await readOnChain(tokenId.toString()));
+    tokens.push(await readOnChain(tokenId.toString(), chain));
   }
   return tokens;
 }
 
-export async function readTotalSupply(): Promise<number> {
-  const instance = getContract();
+export async function readTotalSupply(chain: ChainConfig): Promise<number> {
+  const instance = getContract(chain);
   return Number((await instance.totalSupply()) as bigint);
+}
+
+export function isChainConfigured(chain: ChainConfig): boolean {
+  return /^0x[a-fA-F0-9]{40}$/.test(chain.contractAddress);
 }

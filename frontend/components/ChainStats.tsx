@@ -2,18 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { readTotalSupply } from "@/lib/chain";
-import { config, isContractConfigured } from "@/lib/config";
+import { getSupportedChains } from "@/lib/chains";
 
 export function ChainStats() {
   const [totalSupply, setTotalSupply] = useState<number | null>(null);
+  const chains = getSupportedChains();
 
   useEffect(() => {
-    if (!isContractConfigured) return;
+    if (chains.length === 0) return;
     let active = true;
-    readTotalSupply()
-      .then((value) => {
-        if (active) setTotalSupply(value);
-      })
+    Promise.all(chains.map((chain) => readTotalSupply(chain)))
+      .then((values) => { if (active) setTotalSupply(values.reduce((sum, value) => sum + value, 0)); })
       .catch(() => {
         if (active) setTotalSupply(null);
       });
@@ -29,8 +28,8 @@ export function ChainStats() {
         <span>SBT ijazah terbit on-chain</span>
       </div>
       <div className="stat">
-        <strong>{config.chainId === 80002 ? "Polygon Amoy" : `Chain ${config.chainId}`}</strong>
-        <span>Testnet EVM · verifikasi read-only</span>
+        <strong>{chains.length ? chains.map((chain) => chain.name).join(" + ") : "Belum dikonfigurasi"}</strong>
+        <span>Multichain EVM · verifikasi read-only</span>
       </div>
       <div className="stat">
         <strong>ERC-5192</strong>
