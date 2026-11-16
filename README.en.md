@@ -168,9 +168,9 @@ See [TODO.md](./TODO.md) / [TODO.en.md](./TODO.en.md) for the prioritised task l
 ### Vercel deployment
 
 This repository is a monorepo. Set the Vercel **Root Directory** to `frontend`
-(do not leave it at `.`). Then use the standard `npm install` and `npm run build`
-commands. This keeps Next.js manifests and Lambda paths relative to the frontend
-project and avoids nested `.next` output paths.
+(do not leave it at `.`). The root `vercel.json` uses the standard `npm install`
+and `npm run build` commands. This keeps Next.js manifests and Lambda paths
+relative to the frontend project and avoids nested `.next` output paths.
 
 Do not set Output Directory to `frontend/.next` while the Root Directory is `.`;
 that creates invalid nested Lambda paths. The Root Directory must be changed in

@@ -394,7 +394,8 @@ academix-sbt/
 ## Vercel deployment
 
 Repository ini adalah monorepo. Atur **Root Directory** project Vercel ke
-`frontend` (jangan gunakan `.`). Gunakan `npm install` dan `npm run build` standar.
+`frontend` (jangan gunakan `.`). `vercel.json` root menggunakan command standar
+`npm install` dan `npm run build`.
 Dengan begitu manifest Next.js dan path Lambda tetap relatif ke project frontend.
 
 Jangan mengatur Output Directory ke `frontend/.next` saat Root Directory masih `.`
