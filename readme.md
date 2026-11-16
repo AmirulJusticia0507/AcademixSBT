@@ -397,6 +397,11 @@ Repository ini adalah monorepo. Atur **Root Directory** project Vercel ke
 `frontend` (jangan gunakan `.`). Gunakan `npm install` dan `npm run build` standar.
 Dengan begitu manifest Next.js dan path Lambda tetap relatif ke project frontend.
 
+Jangan mengatur Output Directory ke `frontend/.next` saat Root Directory masih `.`
+karena dapat membuat path Lambda bersarang yang tidak valid. Root Directory harus
+diubah melalui Project Settings Vercel karena `vercel.json` tidak dapat mengubah
+pengaturan dashboard tersebut.
+
 ##  Roadmap / Todo List
 
 > Detail todo list dengan prioritas (P0/P1/P2) dan milestone dipisahkan di **[TODO.md](./TODO.md)**.

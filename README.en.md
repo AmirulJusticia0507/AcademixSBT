@@ -172,6 +172,10 @@ This repository is a monorepo. Set the Vercel **Root Directory** to `frontend`
 commands. This keeps Next.js manifests and Lambda paths relative to the frontend
 project and avoids nested `.next` output paths.
 
+Do not set Output Directory to `frontend/.next` while the Root Directory is `.`;
+that creates invalid nested Lambda paths. The Root Directory must be changed in
+Vercel Project Settings, because `vercel.json` cannot change that dashboard setting.
+
 - [x] SBT specification & hybrid database architecture
 - [x] Gap analysis of SIVIL/PDDikti/PISN
 - [x] ERC-5192 `DiplomaSBT` contract + 15 passing Hardhat tests (local)
