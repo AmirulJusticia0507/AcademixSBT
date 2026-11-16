@@ -111,3 +111,12 @@ npm test
 # dengan PostgreSQL nyata:
 TEST_DATABASE_URL="postgresql://postgres:postgres@localhost:5432/academix" npm test
 ```
+
+## Utilitas
+
+```bash
+# Preview mapping PIN lama 15 digit -> Nomor Ijazah Nasional (NINa) 21 digit
+npm run map:pin -- 792022017000019 001021
+```
+
+Detail format & batasan: [`docs/PISN_NUMBER_MAPPING.md`](../docs/PISN_NUMBER_MAPPING.md).

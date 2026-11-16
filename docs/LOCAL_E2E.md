@@ -149,6 +149,6 @@ Buka:
 
 - Backend mengirim header CORS (default `*`, batasi lewat `CORS_ORIGINS`) agar portal
   dapat mengambil metadata lokal dari `/api/ipfs/:cid`.
-- `npm test` backend mencakup 83 test unit/HTTP + 1 test integrasi PostgreSQL
+- `npm test` backend mencakup 91 test unit/HTTP + 1 test integrasi PostgreSQL
   (di-skip bila `TEST_DATABASE_URL` tidak diisi).
 - Test kontrak: 15 test Hardhat (mint, soulbound, role, revocation, interface).

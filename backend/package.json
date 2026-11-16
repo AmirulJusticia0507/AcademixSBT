@@ -10,7 +10,8 @@
     "start": "node dist/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "migrate": "tsx src/scripts/migrate.ts"
+    "migrate": "tsx src/scripts/migrate.ts",
+    "map:pin": "tsx src/scripts/mapPin.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

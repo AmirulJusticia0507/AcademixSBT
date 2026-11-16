@@ -67,7 +67,7 @@
 - [x] API verifikasi resmi untuk HRD/instansi (auth via API key, rate-limit, dokumentasi OpenAPI).
 - [x] Batch verification (verifikasi banyak Token ID sekaligus via CSV/API).
 - [x] Ekspor bukti verifikasi (PDF/JSON bertanda waktu dari hasil query on-chain).
-- [ ] (Riset) Mapping kolom `certificate_number` (PIN) ke format Nomor Ijazah Nasional PISN agar kompatibel dengan PDDikti.
+- [x] (Riset) Mapping kolom `certificate_number` (PIN) ke format Nomor Ijazah Nasional PISN agar kompatibel dengan PDDikti — lihat [docs/PISN_NUMBER_MAPPING.md](./docs/PISN_NUMBER_MAPPING.md).
 
 ### Privasi, Keamanan & Kepatuhan
 

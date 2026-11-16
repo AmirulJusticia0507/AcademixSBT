@@ -66,7 +66,7 @@
 - [x] Official verification API for HR/institutions (API-key auth, rate limit, OpenAPI docs)
 - [x] Batch verification (many Token IDs via API)
 - [x] Verification proof export (timestamped JSON from on-chain queries)
-- [ ] (Research) Map `certificate_number` (PIN) to the PISN national diploma number format
+- [x] (Research) Map `certificate_number` (PIN) to the PISN national diploma number format (NINa) for PDDikti compatibility — see [docs/PISN_NUMBER_MAPPING.md](./docs/PISN_NUMBER_MAPPING.md).
 
 ### Privacy, Security & Compliance
 
