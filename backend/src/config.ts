@@ -24,6 +24,7 @@ export interface AppConfig {
   documentArchiveDir: string;
   siakadApiUrl?: string;
   siakadApiKey?: string;
+  alchemyApiKey?: string;
   chains: ChainRegistry;
 }
 
@@ -67,6 +68,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     documentArchiveDir: optional(env.DOCUMENT_ARCHIVE_DIR) ?? "./storage/documents",
     siakadApiUrl: optional(env.SIAKAD_API_URL),
     siakadApiKey: optional(env.SIAKAD_API_KEY),
+    alchemyApiKey: optional(env.ALCHEMY_API_KEY),
     chains: new ChainRegistry(
       {
         chainId: Number(optional(env.CHAIN_ID) ?? 80002),

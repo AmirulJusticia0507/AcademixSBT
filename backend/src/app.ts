@@ -29,6 +29,7 @@ import type { VerificationService } from "./services/verification";
 import { validateEligibility } from "./services/eligibility";
 import { CSV_TEMPLATE, validateCsvImport } from "./services/csvImport";
 import { createSiakadProvider, withEligibility, type SiakadProvider } from "./services/siakad";
+import { AlchemyPortfolioService } from "./services/alchemy";
 import type { DiplomaRecord } from "./types";
 
 const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
@@ -64,6 +65,7 @@ export interface AppDependencies {
   diploma: DiplomaService;
   exceptions: ExceptionService;
   siakad?: SiakadProvider;
+  alchemy?: AlchemyPortfolioService;
 }
 
 const upload = multer({
@@ -483,6 +485,16 @@ export function createApp(deps: AppDependencies): Express {
       const { issuer } = issuerSchema.parse(req.body);
       const result = await deps.chain.registerIssuer(issuer);
       res.status(201).json({ issuer, ...result });
+    }),
+  );
+
+  // Portfolio dashboard (Arbitrum + Polygon PoS) via Alchemy — publik (rate limited global)
+  app.get(
+    "/api/portfolio/:address",
+    asyncHandler(async (req, res) => {
+      const { address } = walletParamSchema.parse(req.params);
+      const service = deps.alchemy ?? new AlchemyPortfolioService(deps.config.alchemyApiKey);
+      res.json(await service.getPortfolio(address));
     }),
   );
 

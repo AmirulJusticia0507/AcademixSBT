@@ -9,6 +9,7 @@ import { DocumentArchive } from "./services/documentArchive";
 import { ExceptionService } from "./services/exception";
 import { createIpfsProvider } from "./services/ipfs";
 import { VerificationService } from "./services/verification";
+import { AlchemyPortfolioService } from "./services/alchemy";
 
 const db = new Database(config.databaseUrl);
 const repo = new DiplomaRepository(db);
@@ -31,8 +32,9 @@ const chain = new BlockchainService({
 const verification = new VerificationService(chain, ipfs);
 const diploma = new DiplomaService(chain, ipfs, repo);
 const exceptions = new ExceptionService(exceptionRepo, documentArchive);
+const alchemy = new AlchemyPortfolioService(config.alchemyApiKey);
 
-const app = createApp({ config, db, repo, ipfs, chain, verification, diploma, exceptions });
+const app = createApp({ config, db, repo, ipfs, chain, verification, diploma, exceptions, alchemy });
 
 const server = app.listen(config.port, () => {
   console.log(`AcademixSBT API listening on http://localhost:${config.port}`);

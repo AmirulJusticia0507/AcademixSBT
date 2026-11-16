@@ -31,6 +31,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </Link>
             <nav className="nav" aria-label="Navigasi utama">
               <Link href="/">Verifikasi</Link>
+              <Link href="/portfolio">Portfolio</Link>
               <Link href="/#cara-kerja">Cara Kerja</Link>
               <a
                 href="https://github.com/AmirulJusticia0507/AcademixSBT"
