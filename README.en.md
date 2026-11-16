@@ -97,21 +97,34 @@ Smart contract draft (`DiplomaSBT`, Solidity ^0.8.20, OpenZeppelin ERC-721 + Acc
 
 ---
 
-## 🚀 Getting Started
+## dYs? Getting Started
 
-**Prerequisites:** Node.js >= 18, Docker & Docker Compose, Pinata API Key.
+**Prerequisites:** Node.js >= 18, Docker & Docker Compose (for PostgreSQL), Pinata API Key (optional if using local IPFS).
 
 ```bash
 git clone https://github.com/username/academix-sbt-poc.git
 cd academix-sbt-poc
 
-# .env
-# DATABASE_URL, RPC_URL, PRIVATE_KEY, PINATA_API_KEY, PINATA_SECRET_KEY
+# Copy env examples and adjust values:
+# backend/.env.example   -> backend/.env
+# frontend/.env.example  -> frontend/.env.local
+# contracts/.env.example -> contracts/.env (for contract compile/deploy)
 
-npx hardhat compile
-npx hardhat run scripts/deploy.ts --network amoy
+# Install dependencies
+npm install          # root runner (concurrently)
+npm run install:all  # backend & frontend
+# optional: cd contracts && npm install
+
+# Run backend + frontend with one command
 npm run dev
 ```
+
+- Backend API: `http://localhost:4000`
+- Frontend: `http://localhost:3000`
+- Aliases: `npm run task` / `npm run run`. Run separately: `npm run dev:backend` or `npm run dev:frontend`.
+- With [Taskfile](https://taskfile.dev) CLI installed: `task run` (see `Taskfile.yml`).
+
+Contracts (separate): `cd contracts && npx hardhat compile` and `npm run deploy:amoy` (needs funded testnet key).
 
 ---
 

@@ -1,0 +1,31 @@
+version: "3"
+
+tasks:
+  run:
+    desc: Jalankan backend + frontend bersamaan (1 perintah)
+    cmds:
+      - npm run dev
+
+  dev:
+    desc: Alias run (backend + frontend)
+    cmds:
+      - npm run dev
+
+  backend:
+    desc: Jalankan backend saja
+    dir: backend
+    cmds:
+      - npm run dev
+
+  frontend:
+    desc: Jalankan frontend saja
+    dir: frontend
+    cmds:
+      - npm run dev
+
+  install:
+    desc: Install dependency backend & frontend
+    cmds:
+      - npm install --prefix backend
+      - npm install --prefix frontend
+      - npm install

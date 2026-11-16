@@ -238,31 +238,47 @@ cd academix-sbt-poc
 
 #### 2. Environment Setup (`.env`)
 
-```env
-DATABASE_URL="postgresql://user:pass@localhost:5432/academix_db"
-RPC_URL="https://rpc-amoy.polygon.technology"
-PRIVATE_KEY="0x_YOUR_CONTRACT_DEPLOYER_PRIVATE_KEY"
-PINATA_API_KEY="YOUR_PINATA_API_KEY"
-PINATA_SECRET_KEY="YOUR_PINATA_SECRET_KEY"
-```
+Salin contoh env lalu sesuaikan:
+- `backend/.env.example` → `backend/.env` (PORT 4000, `DATABASE_URL`, `CONTRACT_ADDRESS`, `RPC_URL`, `IPFS_PROVIDER`, `ADMIN_API_KEY`, dll.)
+- `frontend/.env.example` → `frontend/.env.local` (`NEXT_PUBLIC_API_URL=http://localhost:4000`, `NEXT_PUBLIC_CONTRACT_ADDRESS`, `NEXT_PUBLIC_RPC_URL`, dll.)
+- `contracts/.env.example` → `contracts/.env` (untuk compile/deploy kontrak: `PRIVATE_KEY`, `RPC_URL`)
 
-#### 3. Compile Smart Contract
+#### 3. Install Dependencies
 
 ```bash
+# root (runner concurrently)
+npm install
+
+# backend & frontend
+npm run install:all
+
+# (opsional) smart contract
+cd contracts && npm install && cd ..
+```
+
+#### 4. Compile & (Opsional) Deploy Smart Contract
+
+```bash
+cd contracts
 npx hardhat compile
+# opsional deploy testnet (butuh PRIVATE_KEY + RPC + saldo gas):
+# npm run deploy:amoy
+cd ..
 ```
 
-#### 4. Deploy Contract to Testnet
-
-```bash
-npx hardhat run scripts/deploy.ts --network amoy
-```
-
-#### 5. Run Backend API & Frontend
+#### 5. Jalankan Backend + Frontend (1 perintah)
 
 ```bash
 npm run dev
 ```
+
+Atau alias yang sama: `npm run task` / `npm run run`.
+
+- Backend: `http://localhost:4000` (API, default dari `backend/.env`)
+- Frontend: `http://localhost:3000` (Next.js)
+
+Jalankan terpisah bila perlu: `npm run dev:backend` atau `npm run dev:frontend`.
+Jika menggunakan [Taskfile](https://taskfile.dev) (`task` CLI terpasang): `task run` (lihat `Taskfile.yml`).
 
 ---
 
