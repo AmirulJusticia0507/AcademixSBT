@@ -400,7 +400,7 @@ Ringkasan:
 - [x] Perancangan Spesifikasi SBT & Arsitektur Database Hybrid.
 - [x] Analisa gap SIVIL / PDDikti / PISN sebagai dasar kebutuhan fitur.
 - [x] Implementasi Smart Contract ERC-5192 `DiplomaSBT` + 15 test Hardhat lulus (lokal).
-- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia)  butuh `PRIVATE_KEY` + RPC berisi dana.
+- [x] Deploy kontrak ke Polygon Amoy Testnet: [`0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa`](https://amoy.polygonscan.com/address/0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa), chain ID `80002`.
 - [x] Integrasi API Backend untuk Pengunggahan Metadata ke IPFS (Pinata / provider lokal) + hash SHA-256 PDF.
 - [x] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
 - [x] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah)  on-chain + tampil di portal.
@@ -421,4 +421,3 @@ Lihat file [`LICENSE`](./LICENSE) untuk teks lisensi lengkap.
 ##  Disclaimer
 
 > Project ini adalah **Proof of Concept** untuk tujuan edukasi dan riset. **Bukan untuk penggunaan production** tanpa audit keamanan smart contract, review arsitektur, dan penyesuaian terhadap regulasi yang berlaku (mis. PDDikti / kepatuhan data pribadi).
-

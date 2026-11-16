@@ -20,7 +20,7 @@
 ### Smart Contract
 
 - [x] ERC-5192 smart contract (`DiplomaSBT`)  implemented & local tests passing
-- [ ] Deploy contract to Testnet (Polygon Amoy / Arbitrum Sepolia)  needs `PRIVATE_KEY` + RPC
+- [x] Deploy contract to Polygon Amoy Testnet: `0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa` (chain ID `80002`).
 - [x] `MINTER_ROLE` / `DEFAULT_ADMIN_ROLE` via OpenZeppelin `AccessControl`
 - [x] `safeMintSBT(address, tokenId, uri)` + `Locked(tokenId)` event
 - [x] `revokeDiploma(tokenId)` + `isRevoked` mapping + `Revoked(tokenId)` event
@@ -91,11 +91,11 @@
 
 | Milestone | Contents | Status |
 |---|---|---|
-| **M1  Contract live** | P0 smart contract deployed to testnet + tests passing |  |
-| **M2  End-to-end minting** | Backend  IPFS  minting  locked SBT in graduate wallet |  |
-| **M3  Public verification** | Read-only portal + QR/Token ID/Wallet, status & hash display |  |
-| **M4  Revocation & validator** | On-chain revoke visible in portal + PISN-style pre-mint validator |  |
-| **M5  HRD API** | API key + batch verification + proof export |  |
+| **M1  Contract live** | P0 smart contract deployed to testnet + tests passing | [x] |
+| **M2  End-to-end minting** | Backend  IPFS  minting  locked SBT in graduate wallet | [x] |
+| **M3  Public verification** | Read-only portal + QR/Token ID/Wallet, status & hash display | [x] |
+| **M4  Revocation & validator** | On-chain revoke visible in portal + PISN-style pre-mint validator | [x] |
+| **M5  HRD API** | API key + batch verification + proof export | [x] |
 
 ---
 
@@ -105,4 +105,3 @@
 - PDDikti: https://pddikti.kemdiktisaintek.go.id/
 - PISN: https://pisn.kemdiktisaintek.go.id/  FAQ: https://pisn.kemdiktisaintek.go.id/faq
 - Architecture, DB schema, Solidity draft: [README.en.md](./README.en.md)
-

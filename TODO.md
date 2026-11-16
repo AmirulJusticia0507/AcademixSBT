@@ -21,7 +21,7 @@
 ### Smart Contract
 
 - [x] Implementasi Smart Contract ERC-5192 (`DiplomaSBT`)  selesai & lulus test lokal.
-- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia)  butuh `PRIVATE_KEY` + RPC.
+- [x] Deploy kontrak ke Polygon Amoy Testnet: `0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa` (chain ID `80002`).
 - [x] Role `MINTER_ROLE` / `DEFAULT_ADMIN_ROLE` via OpenZeppelin `AccessControl`.
 - [x] `safeMintSBT(address, tokenId, uri)` + event `Locked(tokenId)`.
 - [x] `revokeDiploma(tokenId)` + mapping `isRevoked` + event `Revoked(tokenId)`.
@@ -94,11 +94,11 @@
 
 | Milestone | Isi | Status |
 |---|---|---|
-| **M1  Kontrak jalan** | P0 Smart Contract ter-deploy di testnet + test lulus |  |
-| **M2  Minting end-to-end** | Backend  IPFS  minting  SBT terkunci di wallet alumni |  |
-| **M3  Verifikasi publik** | Portal read-only + QR/Token ID/Wallet, tampilkan status & hash |  |
-| **M4  Revocation & validator** | Revoke on-chain terlihat di portal + pre-mint validator ala PISN |  |
-| **M5  API untuk HRD** | API key + batch verification + ekspor bukti |  |
+| **M1  Kontrak jalan** | P0 Smart Contract ter-deploy di testnet + test lulus | [x] |
+| **M2  Minting end-to-end** | Backend  IPFS  minting  SBT terkunci di wallet alumni | [x] |
+| **M3  Verifikasi publik** | Portal read-only + QR/Token ID/Wallet, tampilkan status & hash | [x] |
+| **M4  Revocation & validator** | Revoke on-chain terlihat di portal + pre-mint validator ala PISN | [x] |
+| **M5  API untuk HRD** | API key + batch verification + ekspor bukti | [x] |
 
 ---
 
@@ -108,4 +108,3 @@
 - PDDikti: https://pddikti.kemdiktisaintek.go.id/
 - PISN: https://pisn.kemdiktisaintek.go.id/  FAQ: https://pisn.kemdiktisaintek.go.id/faq
 - README (arsitektur, schema DB, draft Solidity): [readme.md](./readme.md)
-

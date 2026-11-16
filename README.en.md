@@ -168,7 +168,7 @@ See [TODO.md](./TODO.md) / [TODO.en.md](./TODO.en.md) for the prioritised task l
 - [x] SBT specification & hybrid database architecture
 - [x] Gap analysis of SIVIL/PDDikti/PISN
 - [x] ERC-5192 `DiplomaSBT` contract + 15 passing Hardhat tests (local)
-- [ ] Deploy contract to testnet (Polygon Amoy / Arbitrum Sepolia)  needs `PRIVATE_KEY` + funded RPC
+- [x] Deploy contract to Polygon Amoy Testnet: [`0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa`](https://amoy.polygonscan.com/address/0xaAc61D50D61c0FE2Db83c34ec3860d498b5dcEAa), chain ID `80002`.
 - [x] Backend IPFS metadata upload (Pinata / local provider) + SHA-256 PDF hash
 - [x] Public read-only verification portal
 - [x] Revocation feature (on-chain + visible in portal)
@@ -184,4 +184,3 @@ MIT License  see [LICENSE](./LICENSE).
 ##  Disclaimer
 
 This project is a **Proof of Concept** for education and research. **Not for production use** without a smart-contract security audit, architecture review, and regulatory compliance (PDDikti / personal-data protection).
-
