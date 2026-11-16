@@ -12,6 +12,7 @@ const config: AppConfig = {
   port: 4000,
   publicApiUrl: "http://localhost:4000",
   adminApiKey: "test-key",
+  corsOrigins: ["*"],
   databaseUrl: "postgresql://localhost/test",
   rpcUrl: "http://localhost:8545",
   chainId: 80002,
@@ -138,6 +139,22 @@ describe("HTTP API", () => {
     const response = await request(createApp(buildDeps())).get("/api/config").expect(200);
     expect(response.body.contractAddress).toBe(config.contractAddress);
     expect(response.body.chainId).toBe(80002);
+  });
+
+  it("mengirim header CORS agar portal bisa fetch metadata", async () => {
+    const response = await request(createApp(buildDeps()))
+      .get("/api/config")
+      .set("Origin", "http://localhost:3000")
+      .expect(200);
+    expect(response.headers["access-control-allow-origin"]).toBe("*");
+  });
+
+  it("menjawab preflight OPTIONS dengan 204", async () => {
+    await request(createApp(buildDeps()))
+      .options("/api/verify/1")
+      .set("Origin", "http://localhost:3000")
+      .set("Access-Control-Request-Headers", "x-api-key")
+      .expect(204);
   });
 
   it("GET /api/verify/:tokenId mengembalikan status ijazah", async () => {

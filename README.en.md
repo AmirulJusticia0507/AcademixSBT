@@ -154,10 +154,12 @@ See [TODO.md](./TODO.md) / [TODO.en.md](./TODO.en.md) for the prioritised task l
 
 - [x] SBT specification & hybrid database architecture
 - [x] Gap analysis of SIVIL/PDDikti/PISN
-- [ ] ERC-5192 smart contract on testnet
-- [ ] Backend IPFS integration
-- [ ] Public read-only verification portal
-- [ ] Revocation feature testing
+- [x] ERC-5192 `DiplomaSBT` contract + 15 passing Hardhat tests (local)
+- [ ] Deploy contract to testnet (Polygon Amoy / Arbitrum Sepolia) — needs `PRIVATE_KEY` + funded RPC
+- [x] Backend IPFS metadata upload (Pinata / local provider) + SHA-256 PDF hash
+- [x] Public read-only verification portal
+- [x] Revocation feature (on-chain + visible in portal)
+- [x] End-to-end minting validated locally (backend → IPFS → on-chain → graduate wallet) — see [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md)
 
 ---
 

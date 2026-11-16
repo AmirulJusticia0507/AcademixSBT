@@ -87,6 +87,24 @@ export function createApp(deps: AppDependencies): Express {
   const verifierAuth = requireVerifierApiKey(deps.config.verifierApiKey ?? "", deps.config.adminApiKey);
 
   app.disable("x-powered-by");
+  // CORS untuk portal verifikasi (GET publik) dan dashboard institusi.
+  // Default "*" agar PoC bisa dipakai lintas origin; batasi lewat CORS_ORIGINS.
+  app.use((req: Request, res: Response, next) => {
+    const origin = req.header("origin");
+    const allowAll = deps.config.corsOrigins.includes("*");
+    if (origin && (allowAll || deps.config.corsOrigins.includes(origin))) {
+      res.setHeader("Access-Control-Allow-Origin", allowAll ? "*" : origin);
+      res.setHeader("Vary", "Origin");
+    }
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type,x-api-key,Authorization");
+    res.setHeader("Access-Control-Max-Age", "600");
+    if (req.method === "OPTIONS") {
+      res.status(204).end();
+      return;
+    }
+    next();
+  });
   app.use(express.json({ limit: "1mb" }));
   // Rate limit global (PoC in-memory) — endpoint publik & HRD
   app.use(rateLimit({ windowMs: 60_000, max: 120 }));

@@ -12,6 +12,7 @@
 - [x] Perancangan Spesifikasi SBT & Arsitektur Database Hybrid.
 - [x] Analisa gap SIVIL / PDDikti / PISN sebagai dasar kebutuhan fitur.
 - [x] README dirapikan (struktur, tabel, code block) + file `LICENSE` (MIT).
+- [x] Minting end-to-end lokal tervalidasi (Hardhat node + backend + IPFS lokal + portal) — bukti di [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
 
 ---
 
@@ -92,8 +93,8 @@
 | Milestone | Isi | Status |
 |---|---|---|
 | **M1 — Kontrak jalan** | P0 Smart Contract ter-deploy di testnet + test lulus | ⬜ |
-| **M2 — Minting end-to-end** | Backend → IPFS → minting → SBT terkunci di wallet alumni | ⬜ |
-| **M3 — Verifikasi publik** | Portal read-only + QR/Token ID/Wallet, tampilkan status & hash | ⬜ |
+| **M2 — Minting end-to-end** | Backend → IPFS → minting → SBT terkunci di wallet alumni | ✅ |
+| **M3 — Verifikasi publik** | Portal read-only + QR/Token ID/Wallet, tampilkan status & hash | ✅ |
 | **M4 — Revocation & validator** | Revoke on-chain terlihat di portal + pre-mint validator ala PISN | ✅ |
 | **M5 — API untuk HRD** | API key + batch verification + ekspor bukti | ✅ |
 

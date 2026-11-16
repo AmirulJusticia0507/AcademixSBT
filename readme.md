@@ -383,10 +383,12 @@ Ringkasan:
 
 - [x] Perancangan Spesifikasi SBT & Arsitektur Database Hybrid.
 - [x] Analisa gap SIVIL / PDDikti / PISN sebagai dasar kebutuhan fitur.
-- [ ] Implementasi Smart Contract ERC-5192 pada Testnet.
-- [ ] Integrasi API Backend untuk Pengunggahan Metadata ke IPFS.
-- [ ] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
-- [ ] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah).
+- [x] Implementasi Smart Contract ERC-5192 `DiplomaSBT` + 15 test Hardhat lulus (lokal).
+- [ ] Deploy kontrak ke Testnet (Polygon Amoy / Arbitrum Sepolia) — butuh `PRIVATE_KEY` + RPC berisi dana.
+- [x] Integrasi API Backend untuk Pengunggahan Metadata ke IPFS (Pinata / provider lokal) + hash SHA-256 PDF.
+- [x] Pembuatan Portal Verifikasi Publik tanpa Login Wallet (Read-Only via RPC Provider).
+- [x] Pengujian Fitur Revocation (Pembatalan Ijazah Bermasalah) — on-chain + tampil di portal.
+- [x] Minting end-to-end lokal tervalidasi (backend → IPFS → on-chain → wallet alumni) — lihat [docs/LOCAL_E2E.md](./docs/LOCAL_E2E.md).
 - [ ] Todo turunan dari analisa SIVIL/PDDikti/PISN (QR/Token ID, hash SHA-256, validator ala PISN, API HRD, dll.) — lihat [TODO.md](./TODO.md).
 
 ---

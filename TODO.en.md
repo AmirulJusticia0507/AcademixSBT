@@ -92,8 +92,8 @@
 | Milestone | Contents | Status |
 |---|---|---|
 | **M1 — Contract live** | P0 smart contract deployed to testnet + tests passing | ⬜ |
-| **M2 — End-to-end minting** | Backend → IPFS → minting → locked SBT in graduate wallet | ⬜ |
-| **M3 — Public verification** | Read-only portal + QR/Token ID/Wallet, status & hash display | ⬜ |
+| **M2 — End-to-end minting** | Backend → IPFS → minting → locked SBT in graduate wallet | ✅ |
+| **M3 — Public verification** | Read-only portal + QR/Token ID/Wallet, status & hash display | ✅ |
 | **M4 — Revocation & validator** | On-chain revoke visible in portal + PISN-style pre-mint validator | ✅ |
 | **M5 — HRD API** | API key + batch verification + proof export | ✅ |
 
